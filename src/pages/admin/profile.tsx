@@ -15,7 +15,7 @@ import { Spinner } from "@/components/ui/spinner";
 import {
     useEditProfile,
     useChangePassword,
-} from "./service/mutate/editProfile";
+} from "./service/mutate/useEditProfile";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -336,8 +336,7 @@ export const ProfilePage = () => {
                             </div>
                             <div>
                                 <span className="inline-flex items-center px-4 py-1.5 bg-red-50 text-red-700 text-sm font-bold rounded border border-red-200">
-                                    {profile?.role?.toUpperCase() ||
-                                        "SUPERADMIN"}
+                                    {profile?.role?.toUpperCase() || "ADMIN"}
                                 </span>
                             </div>
                         </div>

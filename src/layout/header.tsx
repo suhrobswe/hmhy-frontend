@@ -17,7 +17,6 @@ export function AppHeader({ role }: { role: Role }) {
             </div>
 
             <div className="flex items-center gap-4">
-                {/* User Info */}
                 <div
                     className="flex items-center gap-3"
                     onClick={() =>
@@ -29,19 +28,20 @@ export function AppHeader({ role }: { role: Role }) {
                     }
                 >
                     <div className="flex items-center gap-2 text-gray-300">
-                        <User className="h-5 w-5" />
-                        <span className="text-sm font-medium">{role}</span>
+                        <User className="h-5 w-5 cursor-pointer" />
+                        <span className="text-sm font-medium cursor-pointer">
+                            {role}
+                        </span>
                     </div>
                     <span className="px-3 py-1 bg-teal-500 text-white text-xs font-semibold rounded uppercase tracking-wide">
                         {role}
                     </span>
                 </div>
 
-                {/* Logout Button */}
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="text-gray-300 hover:text-white hover:bg-[#353F4D]"
+                    className="text-gray-300 hover:text-white hover:bg-[#353F4D] cursor-pointer"
                     onClick={() => {
                         Cookies.remove("token2");
                         Cookies.remove("role");

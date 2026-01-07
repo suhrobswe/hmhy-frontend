@@ -47,17 +47,13 @@ export const AdminLogin = () => {
                 Cookies.set("token2", res.data.data.accessToken);
                 Cookies.set("role", role);
 
-                console.log("Token:", res.data.data.accessToken);
-                console.log("Role:", role);
-
                 toast.success("Tizimga muvaffaqiyatli kirildi!", {
                     position: "top-right",
                 });
 
-                navigate(`/${role}/dashboard`, { replace: true });
+                navigate(`/admin/dashboard`, { replace: true });
             },
-            onError: (error: any) => {
-                console.error("Login error:", error);
+            onError: () => {
                 toast.error("Login failed. Please check your credentials.");
             },
         });

@@ -1,14 +1,12 @@
 import {
     Sidebar,
     SidebarContent,
-    SidebarFooter,
     SidebarHeader,
     SidebarGroupContent,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import logo from "@/assets/logo.svg";
 import { Link } from "react-router-dom";
 import { ActiveLink } from "@/components/active-link";
 import { links } from "./layout-data";
@@ -24,9 +22,15 @@ export function AppSidebar({ role }: { role: Role }) {
             <SidebarHeader className="bg-[#1E2939]! border-b border-gray-700/50">
                 <Link
                     to={homePath}
-                    className="flex items-center gap-2 px-4 py-3"
+                    className="flex items-center justify-center px-4 py-5"
                 >
-                    <img src={logo} alt="Logo" className="h-8 w-8" />
+                    <div className="inline-flex items-center justify-center">
+                        <span className="text-4xl font-bold tracking-wide">
+                            <span className="text-white italic">HM</span>
+                            <span className="text-teal-500 italic">H</span>
+                            <span className="text-gray-400 italic">Y</span>
+                        </span>
+                    </div>
                 </Link>
             </SidebarHeader>
 
@@ -55,7 +59,6 @@ export function AppSidebar({ role }: { role: Role }) {
             </SidebarContent>
 
             {/* FOOTER */}
-            <SidebarFooter className="bg-[#1E2939]! border-t border-gray-700/50 p-4"></SidebarFooter>
         </Sidebar>
     );
 }
