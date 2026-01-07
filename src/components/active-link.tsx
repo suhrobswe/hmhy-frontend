@@ -20,8 +20,8 @@ export const ActiveLink = ({
                 flex items-center gap-3 p-3 rounded-lg transition-all duration-300
                 ${
                     isActive
-                        ? "bg-linear-to-r from-blue-500 to-cyan-400 text-white shadow-lg"
-                        : "text-gray-400 hover:text-blue-400 hover:bg-gray-800"
+                        ? "bg-[#353F4D] text-white"
+                        : "text-gray-300 hover:text-white hover:bg-gray-700/50"
                 }
                 ${className} 
             `}

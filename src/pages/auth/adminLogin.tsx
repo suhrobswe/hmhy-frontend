@@ -42,12 +42,13 @@ export const AdminLogin = () => {
             onSuccess: (res: LoginResponse) => {
                 const rawRole = res.data.data.role.toLowerCase();
 
-                const role = rawRole === "teacher" ? "teacher" : "admin";
+                const role = rawRole === "superadmin" ? "superadmin" : "admin";
 
                 Cookies.set("token2", res.data.data.accessToken);
                 Cookies.set("role", role);
 
-                console.log(res.data.data.accessToken);
+                console.log("Token:", res.data.data.accessToken);
+                console.log("Role:", role);
 
                 toast.success("Tizimga muvaffaqiyatli kirildi!", {
                     position: "top-right",

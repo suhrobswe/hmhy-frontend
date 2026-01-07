@@ -6,7 +6,7 @@ const request = axios.create({
 });
 
 request.interceptors.request.use((config) => {
-    const token = Cookies.get("token");
+    const token = Cookies.get("token2");
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -34,7 +34,7 @@ request.interceptors.response.use(
                 originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
                 return request(originalRequest);
             } catch (refreshError) {
-                Cookies.remove("token");
+                Cookies.remove("token2");
                 Cookies.remove("role");
 
                 window.location.href = "/";

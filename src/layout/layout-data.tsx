@@ -6,14 +6,14 @@ import {
     BookOpen,
     GraduationCap,
     CalendarDays,
-    UserCog,
     HomeIcon,
+    Shield,
 } from "lucide-react";
 
 export const links = {
     superadmin: [
         { title: "Dashboard", url: "/admin/dashboard", icon: HomeIcon },
-        { title: "Admins", url: "/admin/admins", icon: UserCog },
+        { title: "Admins", url: "/admin/admins", icon: Shield },
         { title: "Teachers", url: "/admin/teachers", icon: GraduationCap },
         { title: "Students", url: "/admin/students", icon: Users },
         { title: "Lessons", url: "/admin/lessons", icon: BookOpen },

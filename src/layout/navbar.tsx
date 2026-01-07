@@ -8,48 +8,43 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
 import logo from "@/assets/logo.svg";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
 import { ActiveLink } from "@/components/active-link";
 import { links } from "./layout-data";
 import type { Role } from "@/types/auth-type";
-import Cookies from "js-cookie";
 
 export function AppSidebar({ role }: { role: Role }) {
     const menuLinks = links[role] ?? [];
-
     const homePath =
         role === "teacher" ? "/teacher/dashboard" : "/admin/dashboard";
-    return (
-        <Sidebar className="border-r border-[#0e0e0e] bg-linear-to-b from-black via-[#0b0b0b] to-[#020202] shadow-2xl bg-[#1E2939]">
-            <SidebarHeader className="flex justify-center py-8 border-b border-[#111]">
-                <Link to={homePath} className="flex items-center gap-4">
-                    <div className="w-16 h-16 flex items-center justify-center">
-                        <img
-                            src={logo}
-                            alt="logo"
-                            className="w-full h-full object-contain"
-                        />
-                    </div>
 
-                    <span className="text-xl font-bold capitalize text-cyan-400">
-                        {role.replace("_", " ")}
-                    </span>
+    return (
+        <Sidebar className="bg-[#1E2939]!">
+            <SidebarHeader className="bg-[#1E2939]! border-b border-gray-700/50">
+                <Link
+                    to={homePath}
+                    className="flex items-center gap-2 px-4 py-3"
+                >
+                    <img src={logo} alt="Logo" className="h-8 w-8" />
                 </Link>
             </SidebarHeader>
 
             {/* MENU */}
-            <SidebarContent>
-                <SidebarGroupContent className="p-4">
-                    <SidebarMenu className="space-y-2">
+            <SidebarContent className="bg-[#1E2939]! px-2 py-4">
+                <SidebarGroupContent>
+                    <SidebarMenu>
                         {menuLinks.map((item) => (
-                            <SidebarMenuItem key={item.title}>
-                                <SidebarMenuButton asChild>
-                                    <ActiveLink href={item.url}>
-                                        <item.icon className="w-5 h-5" />
+                            <SidebarMenuItem key={item.url}>
+                                <SidebarMenuButton
+                                    asChild
+                                    className="text-gray-300 hover:text-white hover:bg-gray-700/50! data-[active=true]:text-white! data-[active=true]:bg-[#353F4D]!"
+                                >
+                                    <ActiveLink
+                                        href={item.url}
+                                        className="flex items-center gap-3 px-3 py-2 data-[active=true]:bg-[#353F4D]! aria-[current=page]:bg-[#353F4D]!"
+                                    >
+                                        <item.icon className="h-5 w-5" />
                                         <span>{item.title}</span>
                                     </ActiveLink>
                                 </SidebarMenuButton>
@@ -60,20 +55,7 @@ export function AppSidebar({ role }: { role: Role }) {
             </SidebarContent>
 
             {/* FOOTER */}
-            <SidebarFooter className="border-t border-[#111] p-4">
-                <Button
-                    variant="destructive"
-                    className="w-full flex gap-2"
-                    onClick={() => {
-                        Cookies.remove("token");
-                        Cookies.remove("role");
-                        window.location.href = "/login/admin";
-                    }}
-                >
-                    <LogOut className="w-4 h-4" />
-                    Sign out
-                </Button>
-            </SidebarFooter>
+            <SidebarFooter className="bg-[#1E2939]! border-t border-gray-700/50 p-4"></SidebarFooter>
         </Sidebar>
     );
 }
