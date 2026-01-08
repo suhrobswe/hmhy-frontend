@@ -19,7 +19,6 @@ import type { AdminLoginInput, LoginResponse } from "@/types/auth-type";
 import { PasswordInput } from "@/components/ui/password-input";
 import { useNavigate } from "react-router-dom";
 
-// Form schema
 const formSchema = z.object({
     username: z.string().min(2).max(50),
     password: z.string().min(2).max(50),
@@ -46,6 +45,7 @@ export const AdminLogin = () => {
 
                 Cookies.set("token2", res.data.data.accessToken);
                 Cookies.set("role", role);
+                Cookies.set("username", data.username);
 
                 toast.success("Tizimga muvaffaqiyatli kirildi!", {
                     position: "top-right",
@@ -62,9 +62,7 @@ export const AdminLogin = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#f8f9fa] px-4">
             <div className="w-full max-w-110 mx-auto">
-                {/* Form Card */}
                 <div className="bg-white rounded-4xl px-10 py-12 shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100">
-                    {/* Header */}
                     <div className="text-center mb-10">
                         <h1 className="text-[28px] font-bold text-gray-900 tracking-tight">
                             Admin Panel
@@ -79,7 +77,6 @@ export const AdminLogin = () => {
                             onSubmit={form.handleSubmit(onSubmit)}
                             className="space-y-6"
                         >
-                            {/* Username input */}
                             <FormField
                                 control={form.control}
                                 name="username"
@@ -100,7 +97,6 @@ export const AdminLogin = () => {
                                 )}
                             />
 
-                            {/* Password input */}
                             <FormField
                                 control={form.control}
                                 name="password"
@@ -112,7 +108,7 @@ export const AdminLogin = () => {
                                         <FormControl>
                                             <PasswordInput
                                                 placeholder="••••••••"
-                                                className="bg-[#f5f6f7] border-transparent text-gray-900 h-12 rounded-lg focus:bg-white focus:border-gray-300 transition-colors"
+                                                className="bg-[#f5f6f7] border-transparent cursor-pointer text-gray-900 h-12 rounded-lg focus:bg-white focus:border-gray-300 transition-colors"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -124,7 +120,7 @@ export const AdminLogin = () => {
                             <Button
                                 type="submit"
                                 disabled={isPending}
-                                className="w-full bg-[#1a1a1a] hover:bg-black text-white h-12 rounded-lg mt-8 font-medium text-[15px] transition-colors"
+                                className="w-full bg-[#1a1a1a] cursor-pointer hover:bg-black text-white h-12 rounded-lg mt-8 font-medium text-[15px] transition-colors"
                             >
                                 {isPending && (
                                     <Spinner className="w-4 h-4 mr-2" />

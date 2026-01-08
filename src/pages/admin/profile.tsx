@@ -1,6 +1,7 @@
 import { useProfile } from "./service/query/useProfile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
     Pencil,
     Lock,
@@ -42,8 +43,66 @@ export const ProfilePage = () => {
 
     if (isPending) {
         return (
-            <div className="flex items-center justify-center min-h-100">
-                <Spinner className="w-8 h-8" />
+            <div>
+                <div className="flex items-center justify-between mb-8">
+                    <Skeleton className="h-9 w-40" />
+                    <div className="flex gap-3">
+                        <Skeleton className="h-10 w-32 rounded-md" />
+                        <Skeleton className="h-10 w-40 rounded-md" />
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-lg border border-gray-200 p-8">
+                    <div className="flex items-center gap-2 mb-8">
+                        <Skeleton className="h-5 w-5 rounded" />
+                        <Skeleton className="h-6 w-48" />
+                    </div>
+
+                    <div className="space-y-8">
+                        <div>
+                            <div className="flex items-center gap-2 mb-3">
+                                <Skeleton className="h-4 w-4 rounded" />
+                                <Skeleton className="h-4 w-20" />
+                            </div>
+                            <Skeleton className="h-11 w-full rounded-md" />
+                        </div>
+
+                        <div>
+                            <div className="flex items-center gap-2 mb-3">
+                                <Skeleton className="h-4 w-4 rounded" />
+                                <Skeleton className="h-4 w-16" />
+                            </div>
+                            <Skeleton className="h-11 w-full rounded-md" />
+                        </div>
+
+                        <div>
+                            <div className="flex items-center gap-2 mb-3">
+                                <Skeleton className="h-4 w-4 rounded" />
+                                <Skeleton className="h-4 w-12" />
+                            </div>
+                            <Skeleton className="h-7 w-24 rounded" />
+                        </div>
+
+                        <div>
+                            <div className="flex items-center gap-2 mb-3">
+                                <Skeleton className="h-4 w-4 rounded" />
+                                <Skeleton className="h-4 w-28" />
+                            </div>
+                            <div className="bg-gray-50 border border-gray-200 rounded-md px-4 py-3">
+                                <Skeleton className="h-5 w-48 mb-2" />
+                                <Skeleton className="h-3 w-16" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <Skeleton className="h-4 w-24 mb-3" />
+                            <div className="bg-gray-50 border border-gray-200 rounded-md px-4 py-3">
+                                <Skeleton className="h-5 w-48 mb-2" />
+                                <Skeleton className="h-3 w-16" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -131,7 +190,6 @@ export const ProfilePage = () => {
 
     return (
         <div>
-            {/* Page Header */}
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
                 {!isEditing && !isChangingPassword && (
@@ -156,7 +214,6 @@ export const ProfilePage = () => {
                 )}
             </div>
 
-            {/* Change Password Form */}
             {isChangingPassword && (
                 <div className="bg-white rounded-lg border border-gray-200 p-8">
                     <div className="flex items-center gap-2 mb-8">
@@ -167,7 +224,6 @@ export const ProfilePage = () => {
                     </div>
 
                     <div className="space-y-6">
-                        {/* Current Password */}
                         <div>
                             <label className="text-sm font-medium text-gray-700 block mb-2">
                                 Current Password
@@ -186,7 +242,6 @@ export const ProfilePage = () => {
                             />
                         </div>
 
-                        {/* New Password */}
                         <div>
                             <label className="text-sm font-medium text-gray-700 block mb-2">
                                 New Password
@@ -205,7 +260,6 @@ export const ProfilePage = () => {
                             />
                         </div>
 
-                        {/* Confirm New Password */}
                         <div>
                             <label className="text-sm font-medium text-gray-700 block mb-2">
                                 Confirm New Password
@@ -225,7 +279,6 @@ export const ProfilePage = () => {
                         </div>
                     </div>
 
-                    {/* Action Buttons */}
                     <div className="flex items-center gap-3 mt-8 pt-6 border-t border-gray-200">
                         <Button
                             onClick={handlePasswordChange}
@@ -257,7 +310,6 @@ export const ProfilePage = () => {
                 </div>
             )}
 
-            {/* Profile Information */}
             {!isChangingPassword && (
                 <div className="bg-white rounded-lg border border-gray-200 p-8">
                     <div className="flex items-center gap-2 mb-8">
@@ -268,7 +320,6 @@ export const ProfilePage = () => {
                     </div>
 
                     <div className="space-y-8">
-                        {/* Username */}
                         <div>
                             <div className="flex items-center gap-2 mb-3">
                                 <User className="h-4 w-4 text-gray-600" />
@@ -296,7 +347,6 @@ export const ProfilePage = () => {
                             )}
                         </div>
 
-                        {/* Phone */}
                         <div>
                             <div className="flex items-center gap-2 mb-3">
                                 <Phone className="h-4 w-4 text-gray-600" />
@@ -326,7 +376,6 @@ export const ProfilePage = () => {
                             )}
                         </div>
 
-                        {/* Role */}
                         <div>
                             <div className="flex items-center gap-2 mb-3">
                                 <Shield className="h-4 w-4 text-gray-600" />
@@ -341,7 +390,6 @@ export const ProfilePage = () => {
                             </div>
                         </div>
 
-                        {/* Member Since */}
                         <div>
                             <div className="flex items-center gap-2 mb-3">
                                 <Calendar className="h-4 w-4 text-gray-600" />
@@ -376,7 +424,6 @@ export const ProfilePage = () => {
                             </div>
                         </div>
 
-                        {/* Last Updated */}
                         <div>
                             <label className="text-sm font-medium text-gray-700 block mb-3">
                                 Last Updated
@@ -409,7 +456,6 @@ export const ProfilePage = () => {
                         </div>
                     </div>
 
-                    {/* Save/Cancel Buttons */}
                     {isEditing && (
                         <div className="flex items-center gap-3 mt-8 pt-6 border-t border-gray-200">
                             <Button

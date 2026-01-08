@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
     Dialog,
     DialogContent,
@@ -90,12 +91,44 @@ export const AdminPage = () => {
         });
     };
 
-    if (isLoading)
+    if (isLoading) {
         return (
-            <div className="p-10 text-center font-medium text-slate-500">
-                Yuklanmoqda...
+            <div className="p-8 min-h-screen font-sans">
+                <div className="flex items-center justify-between mb-8 gap-4">
+                    <Skeleton className="h-9 w-32" />
+                    <div className="flex-1 max-w-4xl mx-4">
+                        <Skeleton className="h-11 w-full rounded-md" />
+                    </div>
+                    <Skeleton className="h-11 w-32 rounded-md" />
+                </div>
+
+                <div className="space-y-4">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                        <Card
+                            key={i}
+                            className="p-4 flex items-center justify-between border-none shadow-sm bg-white rounded-xl"
+                        >
+                            <div className="flex items-center gap-4">
+                                <Skeleton className="h-12 w-12 rounded-full" />
+                                <div className="space-y-2">
+                                    <div className="flex items-center gap-2">
+                                        <Skeleton className="h-5 w-24" />
+                                        <Skeleton className="h-5 w-16 rounded-full" />
+                                    </div>
+                                    <Skeleton className="h-4 w-32" />
+                                </div>
+                            </div>
+                            <div className="flex gap-2.5">
+                                <Skeleton className="h-9 w-16 rounded-md" />
+                                <Skeleton className="h-9 w-16 rounded-md" />
+                                <Skeleton className="h-9 w-20 rounded-md" />
+                            </div>
+                        </Card>
+                    ))}
+                </div>
             </div>
         );
+    }
 
     return (
         <div className="p-8 min-h-screen font-sans">
@@ -116,7 +149,6 @@ export const AdminPage = () => {
                 </Button>
             </div>
 
-            {/* LIST */}
             <div className="space-y-4">
                 {admins.length > 0 ? (
                     admins.map((admin: Admin) => (

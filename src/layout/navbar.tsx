@@ -34,7 +34,6 @@ export function AppSidebar({ role }: { role: Role }) {
                 </Link>
             </SidebarHeader>
 
-            {/* MENU */}
             <SidebarContent className="bg-[#1E2939]! px-2 py-4">
                 <SidebarGroupContent>
                     <SidebarMenu>
@@ -57,8 +56,6 @@ export function AppSidebar({ role }: { role: Role }) {
                     </SidebarMenu>
                 </SidebarGroupContent>
             </SidebarContent>
-
-            {/* FOOTER */}
         </Sidebar>
     );
 }
