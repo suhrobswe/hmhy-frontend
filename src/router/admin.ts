@@ -2,6 +2,7 @@ import { AdminPage } from "@/pages/admin/admin";
 import { DashboardPage } from "@/pages/admin/dashboard";
 import { PaymentPage } from "@/pages/admin/payment";
 import { ProfilePage } from "@/pages/admin/profile";
+import { TeacherPage } from "@/pages/admin/teacher";
 import { BookOpen, DollarSign, GraduationCap, Users } from "lucide-react";
 
 export const adminRoute = [
@@ -15,7 +16,7 @@ export const adminRoute = [
     },
     {
         path: "/admin/teachers",
-        page: ProfilePage,
+        page: TeacherPage,
     },
     {
         path: "/admin/students",

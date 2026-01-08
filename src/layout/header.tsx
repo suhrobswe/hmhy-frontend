@@ -8,11 +8,11 @@ import { useNavigate } from "react-router-dom";
 export function AppHeader({ role }: { role: Role }) {
     const navigate = useNavigate();
     return (
-        <header className="sticky top-0 z-50 border-b bg-[#1E2939] border-gray-800 px-6 py-3 flex items-center justify-between backdrop-blur-md">
+        <header className="sticky top-0 z-50 border-b bg-[#101828] border-gray-800 px-6 py-3 flex items-center justify-between backdrop-blur-md">
             <div className="flex items-center gap-4">
                 <SidebarTrigger className="text-gray-300 hover:text-white hover:bg-[#353F4D] rounded p-2 transition-colors" />
                 <h1 className="text-xl font-semibold text-white">
-                    Admin Panel
+                    {role.toUpperCase()} Panel
                 </h1>
             </div>
 

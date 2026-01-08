@@ -17,13 +17,11 @@ export const MainLayout = () => {
         <SidebarProvider>
             <AppSidebar role={role} />
 
-            <main className="flex-1 w-full min-h-screen text-gray-100">
+            <main className="flex-1 w-full min-h-screen text-gray-100 bg-[#E0E0E0]">
                 <AppHeader role={role} />
 
-                <section className="p-6 bg-[#E0E0E0]">
-                    <div className="rounded-xl bg-[#E0E0E0]">
-                        <Outlet />
-                    </div>
+                <section className="p-6">
+                    <Outlet />
                 </section>
             </main>
         </SidebarProvider>

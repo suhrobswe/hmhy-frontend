@@ -134,3 +134,34 @@ export interface PaymentResponse {
     };
     data: PaymentStats;
 }
+
+export interface Teacher {
+    id: string;
+    language: string;
+    name: string;
+    status: string;
+    email: string;
+    phoneNumber: string;
+    fullName: string;
+    isActive: boolean;
+    specification: string | null;
+    level: string | null;
+    description: string | null;
+    hourPrice: number | null;
+    portfolioLink: string | null;
+    imageUrl: string;
+    rating: string;
+    experience: string | null;
+}
+
+export interface DeleteTeacher {
+    reason: string;
+}
+
+
+
+export interface TeacherDeleteModalProps {
+    teacher: any;
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+}

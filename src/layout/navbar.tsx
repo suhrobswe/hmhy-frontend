@@ -18,7 +18,7 @@ export function AppSidebar({ role }: { role: Role }) {
         role === "teacher" ? "/teacher/dashboard" : "/admin/dashboard";
 
     return (
-        <Sidebar className="bg-[#1E2939]!">
+        <Sidebar className="bg-[#1E2939]! border-none">
             <SidebarHeader className="bg-[#1E2939]! border-b border-gray-700/50">
                 <Link
                     to={homePath}
