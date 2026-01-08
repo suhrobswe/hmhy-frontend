@@ -42,7 +42,7 @@ export const AdminPage = () => {
     const { mutate: createAdmin, isPending: isCreating } = useCreateAdmin();
     const { mutate: deleteAdmin, isPending: isDeleting } = useDeleteAdmin();
 
-    const admins = data?.data?.data || [];
+    const admins = data?.data || [];
 
     const handleCreate = () => {
         if (

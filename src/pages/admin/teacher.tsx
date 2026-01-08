@@ -28,9 +28,16 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { TeacherDeleteModal } from "./components/teacherDelete";
+import { useChangeTeacherStatus } from "./service/mutate/useChangeActiveTeacher";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export const TeacherPage = () => {
     const { data, isPending } = useTeacherList();
+
+    const role = Cookies.get("role");
+
+    const navigate = useNavigate();
 
     const [selectedTeacherId, setSelectedTeacherId] = useState<string | null>(
         null
@@ -41,6 +48,9 @@ export const TeacherPage = () => {
 
     const [editTeacher, setEditTeacher] = useState<any | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+    const { mutate: changeStatus, isPending: isStatusPending } =
+        useChangeTeacherStatus();
 
     const handleEditClick = (teacher: any) => {
         setEditTeacher(teacher);
@@ -73,7 +83,7 @@ export const TeacherPage = () => {
         );
     }
 
-    const teachers: Teacher[] = data?.data?.data || [];
+    const teachers: Teacher[] = data?.data || [];
 
     const filteredTeachers = teachers.filter((t) =>
         (t.fullName || t.name || "")
@@ -96,14 +106,33 @@ export const TeacherPage = () => {
         setIsModalOpen(true);
     };
 
+    const handleStatusToggle = (id: string) => {
+        changeStatus(id, {
+            onSuccess: () => {
+                toast.success(`Muvaffaqiyatli bajarildi`, {
+                    position: "top-right",
+                });
+            },
+            onError: () => {
+                toast.error("Xatolik yuz berdi");
+            },
+        });
+    };
+
     return (
         <div className="p-6 space-y-6">
             <div className="flex items-center justify-between">
                 <h1 className="text-3xl font-bold text-gray-900">Teachers</h1>
-                <Button className="bg-black hover:bg-gray-800 text-white flex items-center gap-2 cursor-pointer">
-                    <Trash className="w-4 h-4" />
-                    O'chirilgan Teacher'lar
-                </Button>
+
+                {role === "superadmin" && (
+                    <Button
+                        onClick={() => navigate("/admin/teachers/deleted")}
+                        className="bg-black hover:bg-gray-800 text-white flex items-center gap-2 cursor-pointer"
+                    >
+                        <Trash className="w-4 h-4" />
+                        O'chirilgan Teacher'lar
+                    </Button>
+                )}
             </div>
 
             <div className="flex gap-4">
@@ -125,7 +154,6 @@ export const TeacherPage = () => {
                 </Button>
             </div>
 
-            {/* Filtrlar qatori (image_5b5b65.png asosida) */}
             <div className="flex items-center gap-4 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
                     <span>Status:</span>
@@ -302,6 +330,31 @@ export const TeacherPage = () => {
                                     >
                                         More
                                     </Button>
+
+                                    {teacher.isActive ? (
+                                        <Button
+                                            variant="outline"
+                                            className="h-9 px-4 text-xs font-semibold hover:bg-gray-100"
+                                            onClick={() =>
+                                                handleStatusToggle(teacher.id)
+                                            }
+                                            disabled={isStatusPending}
+                                        >
+                                            Deactivate
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="default"
+                                            className="h-9 px-4 text-xs font-semibold bg-black text-white hover:bg-gray-800"
+                                            onClick={() =>
+                                                handleStatusToggle(teacher.id)
+                                            }
+                                            disabled={isStatusPending}
+                                        >
+                                            Activate
+                                        </Button>
+                                    )}
+
                                     <Button
                                         variant="outline"
                                         className="h-9 px-4 text-xs font-semibold"

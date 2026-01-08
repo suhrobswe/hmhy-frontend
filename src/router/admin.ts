@@ -1,5 +1,6 @@
 import { AdminPage } from "@/pages/admin/admin";
 import { DashboardPage } from "@/pages/admin/dashboard";
+import { DeletedTeachersPage } from "@/pages/admin/deletedTeacher";
 import { PaymentPage } from "@/pages/admin/payment";
 import { ProfilePage } from "@/pages/admin/profile";
 import { TeacherPage } from "@/pages/admin/teacher";
@@ -38,6 +39,11 @@ export const adminRoute = [
     {
         path: "/admin/profile",
         page: ProfilePage,
+    },
+
+    {
+        path: "/admin/teachers/deleted",
+        page: DeletedTeachersPage,
     },
 ];
 

@@ -50,7 +50,6 @@ export interface AddAdminModalState {
     password: string;
 }
 
-// 2. Ko'p tilli xabarlar uchun interfeys
 export interface MessageTranslations {
     uz: string;
     en: string;
@@ -70,7 +69,7 @@ export interface AdminListResponse {
         en: string;
         ru: string;
     };
-    data: Admin[]; // Bu yerda massiv bo'lishi shart
+    data: Admin[];
 }
 
 export interface CreateAdmin {
@@ -158,10 +157,16 @@ export interface DeleteTeacher {
     reason: string;
 }
 
-
-
 export interface TeacherDeleteModalProps {
     teacher: any;
     open: boolean;
     onOpenChange: (open: boolean) => void;
+}
+
+export interface Props {
+    teacher: any;
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+    onConfirm: () => void;
+    isPending: boolean;
 }
