@@ -8,6 +8,7 @@ import {
     Trash,
     Award,
     ArrowUpDown,
+    ArrowUp,
     ArrowDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { Teacher } from "@/types/admin-type";
+import {
+    TEACHER_SPECIFICATIONS,
+    type SortField,
+    type SortOrder,
+    type Teacher,
+} from "@/types/admin-type";
 import { TeacherDetailsModal } from "./components/teacherDetail";
 import { toast } from "sonner";
 import { TeacherEditModal } from "./components/teacherEdit";
@@ -45,6 +51,12 @@ export const TeacherPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [searchQuery, setSearchQuery] = useState("");
+    const [statusFilter, setStatusFilter] = useState<string>("all");
+    const [levelFilter, setLevelFilter] = useState<string>("all");
+    const [languageFilter, setLanguageFilter] = useState<string>("all");
+
+    const [sortField, setSortField] = useState<SortField>("name");
+    const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
     const [editTeacher, setEditTeacher] = useState<any | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -63,6 +75,15 @@ export const TeacherPage = () => {
     const handleDeleteClick = (teacher: any) => {
         setDeleteTeacher(teacher);
         setIsDeleteModalOpen(true);
+    };
+
+    const toggleSort = (field: SortField) => {
+        if (sortField === field) {
+            setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+        } else {
+            setSortField(field);
+            setSortOrder("asc");
+        }
     };
 
     if (isPending) {
@@ -85,11 +106,72 @@ export const TeacherPage = () => {
 
     const teachers: Teacher[] = data?.data || [];
 
-    const filteredTeachers = teachers.filter((t) =>
-        (t.fullName || t.name || "")
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase())
+    const uniqueLevels = Array.from(
+        new Set(teachers.map((t) => t.level).filter(Boolean))
     );
+
+    const filteredTeachers = teachers
+        .filter((t) => {
+            const matchesSearch =
+                (t.fullName || t.name || "")
+                    .toLowerCase()
+                    .includes(searchQuery.toLowerCase()) ||
+                t.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                t.description
+                    ?.toLowerCase()
+                    .includes(searchQuery.toLowerCase());
+
+            const matchesStatus =
+                statusFilter === "all" ||
+                (statusFilter === "active" ? t.isActive : !t.isActive);
+
+            const matchesLevel =
+                levelFilter === "all" || t.level === levelFilter;
+
+            const matchesLanguage =
+                languageFilter === "all" || t.specification === languageFilter;
+
+            return (
+                matchesSearch &&
+                matchesStatus &&
+                matchesLevel &&
+                matchesLanguage
+            );
+        })
+        .sort((a, b) => {
+            let comparison = 0;
+
+            switch (sortField) {
+                case "name":
+                    comparison = (a.fullName || a.name || "").localeCompare(
+                        b.fullName || b.name || ""
+                    );
+                    break;
+                case "email":
+                    comparison = (a.email || "").localeCompare(b.email || "");
+                    break;
+                case "rating":
+                    comparison =
+                        (Number(a.rating) || 0) - (Number(b.rating) || 0);
+                    break;
+                case "price":
+                    comparison =
+                        (Number(a.price) || 0) - (Number(b.price) || 0);
+                    break;
+                case "lessons":
+                    comparison =
+                        (Number(a.lessonsCount) || 0) -
+                        (Number(b.lessonsCount) || 0);
+                    break;
+                case "createdAt":
+                    comparison =
+                        new Date(a.createdAt || 0).getTime() -
+                        new Date(b.createdAt || 0).getTime();
+                    break;
+            }
+
+            return sortOrder === "asc" ? comparison : -comparison;
+        });
 
     const getInitials = (name: string) => {
         if (!name) return "??";
@@ -119,6 +201,26 @@ export const TeacherPage = () => {
         });
     };
 
+    const handleReset = () => {
+        setSearchQuery("");
+        setStatusFilter("all");
+        setLevelFilter("all");
+        setLanguageFilter("all");
+        setSortField("name");
+        setSortOrder("asc");
+    };
+
+    const getSortIcon = (field: SortField) => {
+        if (sortField !== field) {
+            return <ArrowUpDown className="w-3.5 h-3.5 text-gray-400" />;
+        }
+        return sortOrder === "asc" ? (
+            <ArrowUp className="w-3.5 h-3.5 text-gray-700" />
+        ) : (
+            <ArrowDown className="w-3.5 h-3.5 text-gray-700" />
+        );
+    };
+
     return (
         <div className="p-6 space-y-6">
             <div className="flex items-center justify-between">
@@ -142,13 +244,13 @@ export const TeacherPage = () => {
                         placeholder="Search by name, email or bio"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-10 h-10 bg-white border-gray-300 text-black"
+                        className="pl-10 h-10 bg-white border-gray-200 text-black"
                     />
                 </div>
                 <Button
                     variant="outline"
-                    onClick={() => setSearchQuery("")}
-                    className="cursor-pointer text-black"
+                    onClick={handleReset}
+                    className="cursor-pointer text-black border-gray-200 hover:bg-gray-50"
                 >
                     Reset
                 </Button>
@@ -156,37 +258,58 @@ export const TeacherPage = () => {
 
             <div className="flex items-center gap-4 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
-                    <span>Status:</span>
-                    <Select defaultValue="all">
-                        <SelectTrigger className="w-20 h-8 bg-gray-50/50">
-                            <SelectValue placeholder="All" />
+                    <span className="font-medium">Status:</span>
+                    <Select
+                        value={statusFilter}
+                        onValueChange={setStatusFilter}
+                    >
+                        <SelectTrigger className="w-24 h-8 bg-white border-gray-200">
+                            <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="all">All</SelectItem>
+                            <SelectItem value="active">Active</SelectItem>
+                            <SelectItem value="inactive">Inactive</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <span>Level:</span>
-                    <Select defaultValue="all">
-                        <SelectTrigger className="w-30 h-8 bg-gray-50/50">
-                            <SelectValue placeholder="All Levels" />
+                    <span className="font-medium">Level:</span>
+                    <Select value={levelFilter} onValueChange={setLevelFilter}>
+                        <SelectTrigger className="w-32 h-8 bg-white border-gray-200">
+                            <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="all">All Levels</SelectItem>
+                            {uniqueLevels.map((level) => (
+                                <SelectItem key={level} value={level!}>
+                                    {level}
+                                </SelectItem>
+                            ))}
                         </SelectContent>
                     </Select>
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <span>Language:</span>
-                    <Select defaultValue="all">
-                        <SelectTrigger className="w-35 h-8 bg-gray-50/50">
-                            <SelectValue placeholder="All Languages" />
+                    <span className="font-medium">Language:</span>
+                    <Select
+                        value={languageFilter}
+                        onValueChange={setLanguageFilter}
+                    >
+                        <SelectTrigger className="w-36 h-8 bg-white border-gray-200">
+                            <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="all">All Languages</SelectItem>
+                            {Object.values(TEACHER_SPECIFICATIONS).map(
+                                (lang) => (
+                                    <SelectItem key={lang} value={lang}>
+                                        {lang.charAt(0) +
+                                            lang.slice(1).toLowerCase()}
+                                    </SelectItem>
+                                )
+                            )}
                         </SelectContent>
                     </Select>
                 </div>
@@ -195,29 +318,59 @@ export const TeacherPage = () => {
             <div className="flex items-center gap-8 text-[13px] font-medium text-gray-700 px-2 py-2 pt-4">
                 <span className="text-gray-400">Sort by:</span>
 
-                <div className="flex items-center gap-2 cursor-default min-w-20">
-                    Name <ArrowDown className="w-3.5 h-3.5" />
-                </div>
+                <button
+                    onClick={() => toggleSort("name")}
+                    className={`flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors ${
+                        sortField === "name" ? "text-gray-900" : ""
+                    }`}
+                >
+                    Name {getSortIcon("name")}
+                </button>
 
-                <div className="flex items-center gap-2 cursor-default min-w-20">
-                    Email <ArrowUpDown className="w-3.5 h-3.5" />
-                </div>
+                <button
+                    onClick={() => toggleSort("email")}
+                    className={`flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors ${
+                        sortField === "email" ? "text-gray-900" : ""
+                    }`}
+                >
+                    Email {getSortIcon("email")}
+                </button>
 
-                <div className="flex items-center gap-2 cursor-default min-w-20">
-                    Rating <ArrowUpDown className="w-3.5 h-3.5" />
-                </div>
+                <button
+                    onClick={() => toggleSort("rating")}
+                    className={`flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors ${
+                        sortField === "rating" ? "text-gray-900" : ""
+                    }`}
+                >
+                    Rating {getSortIcon("rating")}
+                </button>
 
-                <div className="flex items-center gap-2 cursor-default min-w-20">
-                    Price <ArrowUpDown className="w-3.5 h-3.5" />
-                </div>
+                <button
+                    onClick={() => toggleSort("price")}
+                    className={`flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors ${
+                        sortField === "price" ? "text-gray-900" : ""
+                    }`}
+                >
+                    Price {getSortIcon("price")}
+                </button>
 
-                <div className="flex items-center gap-2 cursor-default min-w-20">
-                    Lessons <ArrowUpDown className="w-3.5 h-3.5" />
-                </div>
+                <button
+                    onClick={() => toggleSort("lessons")}
+                    className={`flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors ${
+                        sortField === "lessons" ? "text-gray-900" : ""
+                    }`}
+                >
+                    Lessons {getSortIcon("lessons")}
+                </button>
 
-                <div className="flex items-center gap-2 cursor-default min-w-20">
-                    Created Date <ArrowUpDown className="w-3.5 h-3.5" />
-                </div>
+                <button
+                    onClick={() => toggleSort("createdAt")}
+                    className={`flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors ${
+                        sortField === "createdAt" ? "text-gray-900" : ""
+                    }`}
+                >
+                    Created Date {getSortIcon("createdAt")}
+                </button>
             </div>
 
             <div className="space-y-4">
@@ -323,7 +476,7 @@ export const TeacherPage = () => {
                                 <div className="flex items-center justify-end gap-2 flex-1 pl-4 border-l border-gray-100">
                                     <Button
                                         variant="outline"
-                                        className="h-9 px-4 text-xs font-semibold cursor-pointer"
+                                        className="h-9 px-4 text-xs font-semibold cursor-pointer border-gray-200 hover:bg-gray-50"
                                         onClick={() =>
                                             handleOpenDetails(teacher.id)
                                         }
@@ -334,7 +487,7 @@ export const TeacherPage = () => {
                                     {teacher.isActive ? (
                                         <Button
                                             variant="outline"
-                                            className="h-9 px-4 text-xs font-semibold hover:bg-gray-100"
+                                            className="h-9 px-4 text-xs font-semibold hover:bg-gray-100 border-gray-200 cursor-pointer"
                                             onClick={() =>
                                                 handleStatusToggle(teacher.id)
                                             }
@@ -345,7 +498,7 @@ export const TeacherPage = () => {
                                     ) : (
                                         <Button
                                             variant="default"
-                                            className="h-9 px-4 text-xs font-semibold bg-black text-white hover:bg-gray-800"
+                                            className="h-9 px-4 text-xs font-semibold bg-black text-white hover:bg-gray-800 cursor-pointer"
                                             onClick={() =>
                                                 handleStatusToggle(teacher.id)
                                             }
@@ -357,7 +510,7 @@ export const TeacherPage = () => {
 
                                     <Button
                                         variant="outline"
-                                        className="h-9 px-4 text-xs font-semibold"
+                                        className="h-9 px-4 text-xs font-semibold border-gray-200 hover:bg-gray-50 cursor-pointer"
                                         onClick={() => handleEditClick(teacher)}
                                     >
                                         Edit
@@ -365,7 +518,7 @@ export const TeacherPage = () => {
 
                                     <Button
                                         variant="destructive"
-                                        className="h-9 px-4 text-xs font-semibold bg-red-600 border-red-100 hover:bg-red-400 shadow-none"
+                                        className="h-9 px-4 text-xs font-semibold bg-red-600 border-red-100 hover:bg-red-700 shadow-none cursor-pointer"
                                         onClick={() =>
                                             handleDeleteClick(teacher)
                                         }

@@ -30,6 +30,11 @@ export const AdminPage = () => {
     const [selectedAdminId, setSelectedAdminId] = useState<string | null>(null);
     const [adminToDelete, setAdminToDelete] = useState<Admin | null>(null);
     const [adminToEdit, setAdminToEdit] = useState<Admin | null>(null);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [sortBy, setSortBy] = useState<
+        "username" | "createdAt" | "updatedAt"
+    >("username");
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
     const [createFormData, setCreateFormData] = useState({
         username: "",
@@ -43,6 +48,41 @@ export const AdminPage = () => {
     const { mutate: deleteAdmin, isPending: isDeleting } = useDeleteAdmin();
 
     const admins = data?.data || [];
+
+    // Filter and sort admins
+    const filteredAndSortedAdmins = admins
+        .filter((admin: Admin) => {
+            const query = searchQuery.toLowerCase();
+            return (
+                admin.username?.toLowerCase().includes(query) ||
+                admin.phoneNumber?.toLowerCase().includes(query) ||
+                admin.role?.toLowerCase().includes(query)
+            );
+        })
+        .sort((a: Admin, b: Admin) => {
+            let comparison = 0;
+            if (sortBy === "username") {
+                comparison = (a.username || "").localeCompare(b.username || "");
+            } else if (sortBy === "createdAt") {
+                comparison =
+                    new Date(a.createdAt || 0).getTime() -
+                    new Date(b.createdAt || 0).getTime();
+            } else if (sortBy === "updatedAt") {
+                comparison =
+                    new Date(a.updatedAt || 0).getTime() -
+                    new Date(b.updatedAt || 0).getTime();
+            }
+            return sortOrder === "asc" ? comparison : -comparison;
+        });
+
+    const toggleSort = (field: "username" | "createdAt" | "updatedAt") => {
+        if (sortBy === field) {
+            setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+        } else {
+            setSortBy(field);
+            setSortOrder("asc");
+        }
+    };
 
     const handleCreate = () => {
         if (
@@ -137,8 +177,10 @@ export const AdminPage = () => {
                 <div className="flex-1 max-w-4xl mx-4 relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <Input
-                        placeholder="Search..."
-                        className="pl-10 h-11 bg-white border-none text-black shadow-sm w-full rounded-md"
+                        placeholder="Search by username, phone or role"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-10 h-11 bg-white border-slate-200 text-black shadow-sm w-full rounded-md"
                     />
                 </div>
                 <Button
@@ -149,9 +191,49 @@ export const AdminPage = () => {
                 </Button>
             </div>
 
+            <div className="mb-4 flex items-center gap-4 text-sm">
+                <span className="text-slate-600 font-medium">Sort by:</span>
+                <Button
+                    variant="ghost"
+                    onClick={() => toggleSort("username")}
+                    className="h-8 px-3 text-slate-700 hover:bg-slate-100 cursor-pointer flex items-center gap-1"
+                >
+                    Username
+                    {sortBy === "username" && (
+                        <span className="text-xs">
+                            {sortOrder === "asc" ? "↑" : "↓"}
+                        </span>
+                    )}
+                </Button>
+                <Button
+                    variant="ghost"
+                    onClick={() => toggleSort("createdAt")}
+                    className="h-8 px-3 text-slate-700 hover:bg-slate-100 cursor-pointer flex items-center gap-1"
+                >
+                    Created Date
+                    {sortBy === "createdAt" && (
+                        <span className="text-xs">
+                            {sortOrder === "asc" ? "↑" : "↓"}
+                        </span>
+                    )}
+                </Button>
+                <Button
+                    variant="ghost"
+                    onClick={() => toggleSort("updatedAt")}
+                    className="h-8 px-3 text-slate-700 hover:bg-slate-100 cursor-pointer flex items-center gap-1"
+                >
+                    Updated Date
+                    {sortBy === "updatedAt" && (
+                        <span className="text-xs">
+                            {sortOrder === "asc" ? "↑" : "↓"}
+                        </span>
+                    )}
+                </Button>
+            </div>
+
             <div className="space-y-4">
-                {admins.length > 0 ? (
-                    admins.map((admin: Admin) => (
+                {filteredAndSortedAdmins.length > 0 ? (
+                    filteredAndSortedAdmins.map((admin: Admin) => (
                         <Card
                             key={admin.id}
                             className="p-4 flex items-center justify-between border-none shadow-sm hover:shadow-md transition-shadow bg-white rounded-xl"

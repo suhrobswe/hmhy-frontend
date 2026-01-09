@@ -14,9 +14,6 @@ export type EditAdmin = {
     password?: string;
 };
 
-export type SortField = "username" | "createdDate" | "updatedDate";
-export type SortOrder = "asc" | "desc";
-
 export interface Admin {
     id: string;
     username: string;
@@ -135,6 +132,8 @@ export interface PaymentResponse {
 }
 
 export interface Teacher {
+    price: number;
+    lessonsCount: number;
     id: string;
     language: string;
     name: string;
@@ -151,6 +150,8 @@ export interface Teacher {
     imageUrl: string;
     rating: string;
     experience: string | null;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface DeleteTeacher {
@@ -170,3 +171,27 @@ export interface Props {
     onConfirm: () => void;
     isPending: boolean;
 }
+
+export const TEACHER_SPECIFICATIONS = {
+    ENGLISH: "ENGLISH",
+    RUSSIAN: "RUSSIAN",
+    DEUTSCH: "DEUTSCH",
+    SPANISH: "SPANISH",
+    FRENCH: "FRENCH",
+    ITALIAN: "ITALIAN",
+    JAPANESE: "JAPANESE",
+    CHINESE: "CHINESE",
+    ARABIC: "ARABIC",
+    KOREAN: "KOREAN",
+} as const;
+
+export const TEACHER_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"] as const;
+
+export type SortField =
+    | "name"
+    | "email"
+    | "rating"
+    | "price"
+    | "lessons"
+    | "createdAt";
+export type SortOrder = "asc" | "desc";
