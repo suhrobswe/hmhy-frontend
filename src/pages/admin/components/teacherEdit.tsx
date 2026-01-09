@@ -6,12 +6,20 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"; // Select komponentlari qo'shildi
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useEditTeacher } from "../service/mutate/useEditTeacher";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import { TEACHER_SPECIFICATIONS } from "@/types/admin-type";
 
 interface TeacherEditModalProps {
     teacher: any;
@@ -26,7 +34,7 @@ export const TeacherEditModal = ({
 }: TeacherEditModalProps) => {
     const { mutate, isPending } = useEditTeacher();
 
-    const { register, handleSubmit, reset } = useForm({
+    const { register, handleSubmit, reset, setValue, watch } = useForm({
         defaultValues: {
             fullName: "",
             phoneNumber: "",
@@ -35,9 +43,12 @@ export const TeacherEditModal = ({
             hourPrice: 0,
             level: "",
             portfolioLink: "",
-            specification: "",
+            specification: "ENGLISH", // Default qiymat
         },
     });
+
+    // Select qiymatini kuzatish uchun
+    const specValue = watch("specification");
 
     useEffect(() => {
         if (teacher) {
@@ -49,7 +60,7 @@ export const TeacherEditModal = ({
                 hourPrice: teacher.hourPrice || 0,
                 level: teacher.level || "",
                 portfolioLink: teacher.portfolioLink || "",
-                specification: teacher.specification || "",
+                specification: teacher.specification || "ENGLISH",
             });
         }
     }, [teacher, reset]);
@@ -63,7 +74,6 @@ export const TeacherEditModal = ({
                     queryClient.invalidateQueries({
                         queryKey: ["teacherList"],
                     });
-
                     toast.success("Ma'lumotlar yangilandi", {
                         position: "top-right",
                     });
@@ -127,11 +137,27 @@ export const TeacherEditModal = ({
                             placeholder="Portfolio Video Link"
                             className="h-11 bg-slate-50 border-slate-200"
                         />
-                        <Input
-                            {...register("specification")}
-                            placeholder="Specification (e.g. English)"
-                            className="h-11 bg-slate-50 border-slate-200"
-                        />
+
+                        <Select
+                            value={specValue}
+                            onValueChange={(value) =>
+                                setValue("specification", value)
+                            }
+                        >
+                            <SelectTrigger className="h-11 bg-slate-50 border-slate-200 w-full focus:ring-0">
+                                <SelectValue placeholder="Select Specification" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white">
+                                {Object.values(TEACHER_SPECIFICATIONS).map(
+                                    (spec) => (
+                                        <SelectItem key={spec} value={spec}>
+                                            {spec.charAt(0) +
+                                                spec.slice(1).toLowerCase()}
+                                        </SelectItem>
+                                    )
+                                )}
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     <div className="flex justify-end gap-3 mt-6">

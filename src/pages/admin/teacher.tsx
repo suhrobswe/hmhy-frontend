@@ -10,6 +10,8 @@ import {
     ArrowUpDown,
     ArrowUp,
     ArrowDown,
+    ChevronLeft,
+    ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,10 +41,13 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 export const TeacherPage = () => {
-    const { data, isPending } = useTeacherList();
+    // Pagination States
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+
+    const { data, isPending } = useTeacherList(page, pageSize);
 
     const role = Cookies.get("role");
-
     const navigate = useNavigate();
 
     const [selectedTeacherId, setSelectedTeacherId] = useState<string | null>(
@@ -105,6 +110,10 @@ export const TeacherPage = () => {
     }
 
     const teachers: Teacher[] = data?.data || [];
+    const totalPages = data?.totalPages || 1;
+    const totalElements = data?.totalElements || 0;
+    const from = data?.from || 0;
+    const to = data?.to || 0;
 
     const uniqueLevels = Array.from(
         new Set(teachers.map((t) => t.level).filter(Boolean))
@@ -116,18 +125,13 @@ export const TeacherPage = () => {
                 (t.fullName || t.name || "")
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase()) ||
-                t.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                t.description
-                    ?.toLowerCase()
-                    .includes(searchQuery.toLowerCase());
+                t.email?.toLowerCase().includes(searchQuery.toLowerCase());
 
             const matchesStatus =
                 statusFilter === "all" ||
                 (statusFilter === "active" ? t.isActive : !t.isActive);
-
             const matchesLevel =
                 levelFilter === "all" || t.level === levelFilter;
-
             const matchesLanguage =
                 languageFilter === "all" || t.specification === languageFilter;
 
@@ -140,7 +144,6 @@ export const TeacherPage = () => {
         })
         .sort((a, b) => {
             let comparison = 0;
-
             switch (sortField) {
                 case "name":
                     comparison = (a.fullName || a.name || "").localeCompare(
@@ -156,7 +159,7 @@ export const TeacherPage = () => {
                     break;
                 case "price":
                     comparison =
-                        (Number(a.price) || 0) - (Number(b.price) || 0);
+                        (Number(a.hourPrice) || 0) - (Number(b.hourPrice) || 0);
                     break;
                 case "lessons":
                     comparison =
@@ -169,7 +172,6 @@ export const TeacherPage = () => {
                         new Date(b.createdAt || 0).getTime();
                     break;
             }
-
             return sortOrder === "asc" ? comparison : -comparison;
         });
 
@@ -190,14 +192,11 @@ export const TeacherPage = () => {
 
     const handleStatusToggle = (id: string) => {
         changeStatus(id, {
-            onSuccess: () => {
+            onSuccess: () =>
                 toast.success(`Muvaffaqiyatli bajarildi`, {
                     position: "top-right",
-                });
-            },
-            onError: () => {
-                toast.error("Xatolik yuz berdi");
-            },
+                }),
+            onError: () => toast.error("Xatolik yuz berdi"),
         });
     };
 
@@ -208,12 +207,12 @@ export const TeacherPage = () => {
         setLanguageFilter("all");
         setSortField("name");
         setSortOrder("asc");
+        setPage(1);
     };
 
     const getSortIcon = (field: SortField) => {
-        if (sortField !== field) {
+        if (sortField !== field)
             return <ArrowUpDown className="w-3.5 h-3.5 text-gray-400" />;
-        }
         return sortOrder === "asc" ? (
             <ArrowUp className="w-3.5 h-3.5 text-gray-700" />
         ) : (
@@ -225,14 +224,12 @@ export const TeacherPage = () => {
         <div className="p-6 space-y-6">
             <div className="flex items-center justify-between">
                 <h1 className="text-3xl font-bold text-gray-900">Teachers</h1>
-
                 {role === "superadmin" && (
                     <Button
                         onClick={() => navigate("/admin/teachers/deleted")}
                         className="bg-black hover:bg-gray-800 text-white flex items-center gap-2 cursor-pointer"
                     >
-                        <Trash className="w-4 h-4" />
-                        O'chirilgan Teacher'lar
+                        <Trash className="w-4 h-4" /> O'chirilgan Teacher'lar
                     </Button>
                 )}
             </div>
@@ -243,7 +240,10 @@ export const TeacherPage = () => {
                     <Input
                         placeholder="Search by name, email or bio"
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={(e) => {
+                            setSearchQuery(e.target.value);
+                            setPage(1);
+                        }}
                         className="pl-10 h-10 bg-white border-gray-200 text-black"
                     />
                 </div>
@@ -261,7 +261,10 @@ export const TeacherPage = () => {
                     <span className="font-medium">Status:</span>
                     <Select
                         value={statusFilter}
-                        onValueChange={setStatusFilter}
+                        onValueChange={(v) => {
+                            setStatusFilter(v);
+                            setPage(1);
+                        }}
                     >
                         <SelectTrigger className="w-24 h-8 bg-white border-gray-200">
                             <SelectValue />
@@ -276,7 +279,13 @@ export const TeacherPage = () => {
 
                 <div className="flex items-center gap-2">
                     <span className="font-medium">Level:</span>
-                    <Select value={levelFilter} onValueChange={setLevelFilter}>
+                    <Select
+                        value={levelFilter}
+                        onValueChange={(v) => {
+                            setLevelFilter(v);
+                            setPage(1);
+                        }}
+                    >
                         <SelectTrigger className="w-32 h-8 bg-white border-gray-200">
                             <SelectValue />
                         </SelectTrigger>
@@ -295,7 +304,10 @@ export const TeacherPage = () => {
                     <span className="font-medium">Language:</span>
                     <Select
                         value={languageFilter}
-                        onValueChange={setLanguageFilter}
+                        onValueChange={(v) => {
+                            setLanguageFilter(v);
+                            setPage(1);
+                        }}
                     >
                         <SelectTrigger className="w-36 h-8 bg-white border-gray-200">
                             <SelectValue />
@@ -315,9 +327,9 @@ export const TeacherPage = () => {
                 </div>
             </div>
 
+            {/* Sort Buttons - Qayta tiklandi */}
             <div className="flex items-center gap-8 text-[13px] font-medium text-gray-700 px-2 py-2 pt-4">
                 <span className="text-gray-400">Sort by:</span>
-
                 <button
                     onClick={() => toggleSort("name")}
                     className={`flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors ${
@@ -326,7 +338,6 @@ export const TeacherPage = () => {
                 >
                     Name {getSortIcon("name")}
                 </button>
-
                 <button
                     onClick={() => toggleSort("email")}
                     className={`flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors ${
@@ -335,7 +346,6 @@ export const TeacherPage = () => {
                 >
                     Email {getSortIcon("email")}
                 </button>
-
                 <button
                     onClick={() => toggleSort("rating")}
                     className={`flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors ${
@@ -344,7 +354,6 @@ export const TeacherPage = () => {
                 >
                     Rating {getSortIcon("rating")}
                 </button>
-
                 <button
                     onClick={() => toggleSort("price")}
                     className={`flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors ${
@@ -353,7 +362,6 @@ export const TeacherPage = () => {
                 >
                     Price {getSortIcon("price")}
                 </button>
-
                 <button
                     onClick={() => toggleSort("lessons")}
                     className={`flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors ${
@@ -362,7 +370,6 @@ export const TeacherPage = () => {
                 >
                     Lessons {getSortIcon("lessons")}
                 </button>
-
                 <button
                     onClick={() => toggleSort("createdAt")}
                     className={`flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors ${
@@ -404,12 +411,11 @@ export const TeacherPage = () => {
                                                     teacher.name}
                                             </h3>
                                             <Badge
-                                                className={`text-[10px] px-2 py-0.5 rounded-full border-none font-bold uppercase shadow-none 
-    ${
-        teacher.isActive
-            ? "bg-green-100 text-green-700 hover:bg-green-100"
-            : "bg-gray-100 text-red-500 hover:bg-gray-100"
-    }`}
+                                                className={`text-[10px] px-2 py-0.5 rounded-full border-none font-bold uppercase shadow-none ${
+                                                    teacher.isActive
+                                                        ? "bg-green-100 text-green-700"
+                                                        : "bg-gray-100 text-red-500"
+                                                }`}
                                             >
                                                 {teacher.isActive
                                                     ? "Active"
@@ -428,7 +434,6 @@ export const TeacherPage = () => {
                                         </div>
                                     </div>
                                 </div>
-
                                 <div className="flex flex-col justify-center gap-1.5 w-[30%] px-6 border-l border-gray-100 shrink-0">
                                     <div
                                         className="flex items-center gap-3 text-sm text-gray-600 font-medium truncate cursor-pointer hover:text-blue-600 transition-colors"
@@ -436,9 +441,7 @@ export const TeacherPage = () => {
                                             navigator.clipboard.writeText(
                                                 teacher.email
                                             );
-                                            toast.success("Email copied!", {
-                                                position: "top-right",
-                                            });
+                                            toast.success("Email copied!");
                                         }}
                                     >
                                         <Mail className="w-4 h-4 text-gray-400 shrink-0" />{" "}
@@ -453,8 +456,7 @@ export const TeacherPage = () => {
                                                 teacher.phoneNumber
                                             );
                                             toast.success(
-                                                "Phone number copied!",
-                                                { position: "top-right" }
+                                                "Phone number copied!"
                                             );
                                         }}
                                     >
@@ -462,7 +464,6 @@ export const TeacherPage = () => {
                                         <span>{teacher.phoneNumber}</span>
                                     </div>
                                 </div>
-
                                 <div className="flex flex-col items-center justify-center w-[10%] shrink-0">
                                     <div className="flex items-center gap-1 text-yellow-500 font-bold">
                                         <Star className="w-5 h-5 fill-yellow-500" />{" "}
@@ -472,53 +473,45 @@ export const TeacherPage = () => {
                                         Rating
                                     </span>
                                 </div>
-
                                 <div className="flex items-center justify-end gap-2 flex-1 pl-4 border-l border-gray-100">
                                     <Button
                                         variant="outline"
-                                        className="h-9 px-4 text-xs font-semibold cursor-pointer border-gray-200 hover:bg-gray-50"
+                                        className="h-9 px-4 text-xs font-semibold cursor-pointer"
                                         onClick={() =>
                                             handleOpenDetails(teacher.id)
                                         }
                                     >
                                         More
                                     </Button>
-
-                                    {teacher.isActive ? (
-                                        <Button
-                                            variant="outline"
-                                            className="h-9 px-4 text-xs font-semibold hover:bg-gray-100 border-gray-200 cursor-pointer"
-                                            onClick={() =>
-                                                handleStatusToggle(teacher.id)
-                                            }
-                                            disabled={isStatusPending}
-                                        >
-                                            Deactivate
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            variant="default"
-                                            className="h-9 px-4 text-xs font-semibold bg-black text-white hover:bg-gray-800 cursor-pointer"
-                                            onClick={() =>
-                                                handleStatusToggle(teacher.id)
-                                            }
-                                            disabled={isStatusPending}
-                                        >
-                                            Activate
-                                        </Button>
-                                    )}
-
+                                    <Button
+                                        variant={
+                                            teacher.isActive
+                                                ? "outline"
+                                                : "default"
+                                        }
+                                        className={`h-9 px-4 text-xs font-semibold cursor-pointer ${
+                                            !teacher.isActive &&
+                                            "bg-black text-white hover:bg-gray-800"
+                                        }`}
+                                        onClick={() =>
+                                            handleStatusToggle(teacher.id)
+                                        }
+                                        disabled={isStatusPending}
+                                    >
+                                        {teacher.isActive
+                                            ? "Deactivate"
+                                            : "Activate"}
+                                    </Button>
                                     <Button
                                         variant="outline"
-                                        className="h-9 px-4 text-xs font-semibold border-gray-200 hover:bg-gray-50 cursor-pointer"
+                                        className="h-9 px-4 text-xs font-semibold cursor-pointer"
                                         onClick={() => handleEditClick(teacher)}
                                     >
                                         Edit
                                     </Button>
-
                                     <Button
                                         variant="destructive"
-                                        className="h-9 px-4 text-xs font-semibold bg-red-600 border-red-100 hover:bg-red-700 shadow-none cursor-pointer"
+                                        className="h-9 px-4 text-xs font-semibold bg-red-600 hover:bg-red-700 cursor-pointer"
                                         onClick={() =>
                                             handleDeleteClick(teacher)
                                         }
@@ -532,6 +525,87 @@ export const TeacherPage = () => {
                 )}
             </div>
 
+            {/* Pagination Controls */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4 border-t border-gray-100 mt-6">
+                <div className="flex items-center gap-6 text-sm text-gray-600">
+                    <p>
+                        Showing{" "}
+                        <span className="font-semibold text-gray-900">
+                            {from}
+                        </span>{" "}
+                        to{" "}
+                        <span className="font-semibold text-gray-900">
+                            {to}
+                        </span>{" "}
+                        of{" "}
+                        <span className="font-semibold text-gray-900">
+                            {totalElements}
+                        </span>{" "}
+                        results
+                    </p>
+                    <div className="flex items-center gap-2">
+                        <span>Show:</span>
+                        <Select
+                            value={pageSize.toString()}
+                            onValueChange={(v) => {
+                                setPageSize(Number(v));
+                                setPage(1);
+                            }}
+                        >
+                            <SelectTrigger className="h-8 w-30 bg-white border-gray-200">
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="5">5 per page</SelectItem>
+                                <SelectItem value="10">10 per page</SelectItem>
+                                <SelectItem value="20">20 per page</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        disabled={page === 1}
+                        onClick={() => setPage((p) => p - 1)}
+                        className="text-gray-600 hover:bg-gray-100 disabled:opacity-40 cursor-pointer"
+                    >
+                        <ChevronLeft className="h-4 w-4 mr-1" /> Previous
+                    </Button>
+                    <div className="flex items-center gap-1">
+                        {Array.from(
+                            { length: totalPages },
+                            (_, i) => i + 1
+                        ).map((p) => (
+                            <Button
+                                key={p}
+                                variant={page === p ? "default" : "ghost"}
+                                size="sm"
+                                onClick={() => setPage(p)}
+                                className={`h-8 w-8 p-0 rounded-md transition-colors ${
+                                    page === p
+                                        ? "bg-black text-white hover:bg-gray-800"
+                                        : "text-gray-600 hover:bg-gray-100"
+                                }`}
+                            >
+                                {p}
+                            </Button>
+                        ))}
+                    </div>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        disabled={page === totalPages}
+                        onClick={() => setPage((p) => p + 1)}
+                        className="text-gray-600 hover:bg-gray-100 disabled:opacity-40 cursor-pointer"
+                    >
+                        Next <ChevronRight className="h-4 w-4 ml-1" />
+                    </Button>
+                </div>
+            </div>
+
             {selectedTeacherId && (
                 <TeacherDetailsModal
                     id={selectedTeacherId}
@@ -539,13 +613,11 @@ export const TeacherPage = () => {
                     onOpenChange={setIsModalOpen}
                 />
             )}
-
             <TeacherEditModal
                 teacher={editTeacher}
                 open={isEditModalOpen}
                 onOpenChange={setIsEditModalOpen}
             />
-
             <TeacherDeleteModal
                 teacher={deleteTeacher}
                 open={isDeleteModalOpen}
