@@ -30,14 +30,14 @@ import {
 } from "@/components/ui/select";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { useAdminList } from "./service/query/useAdminList";
-import { useCreateAdmin } from "./service/mutate/useCreateAdmin";
-import { useDeleteAdmin } from "./service/mutate/useDeleteAdmin";
 import type { Admin } from "@/types/admin-type";
 import { toast } from "sonner";
-import { AdminDetailsModal } from "./components/adminDetail";
-import { DeleteConfirmationModal } from "./components/adminDelete";
-import { EditAdminModal } from "./components/adminEdit";
+import { useAdminList } from "./service/query/admin/useAdminList";
+import { useCreateAdmin } from "./service/mutate/admin/useCreateAdmin";
+import { useDeleteAdmin } from "./service/mutate/admin/useDeleteAdmin";
+import { AdminDetailsModal } from "./components/admin/adminDetail";
+import { DeleteConfirmationModal } from "./components/admin/adminDelete";
+import { EditAdminModal } from "./components/admin/adminEdit";
 
 export const AdminPage = () => {
     const [page, setPage] = useState(1);

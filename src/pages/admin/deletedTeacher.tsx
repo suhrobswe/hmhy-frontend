@@ -10,14 +10,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useDeletedTeacher } from "./service/query/useDeletedTeacher";
-import { TeacherDetailsModal } from "./components/teacherDetail";
-import { TeacherCard } from "./components/teacherCard";
-import { useRestoreTeacher } from "./service/mutate/useRestoreTeacher";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { useHardDeleteTeacher } from "./service/mutate/useHardDeleteTeacher";
-import { TeacherHardDeleteModal } from "./components/teacherHardDelete";
+import { useDeletedTeacher } from "./service/query/teacher/useDeletedTeacher";
+import { useHardDeleteTeacher } from "./service/mutate/teacher/useHardDeleteTeacher";
+import { useRestoreTeacher } from "./service/mutate/teacher/useRestoreTeacher";
+import { TeacherDetailsModal } from "./components/teacher/teacherDetail";
+import { TeacherHardDeleteModal } from "./components/teacher/teacherHardDelete";
+import { TeacherCard } from "./components/teacher/teacherCard";
 
 export const DeletedTeachersPage = () => {
     const navigate = useNavigate();

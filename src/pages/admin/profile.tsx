@@ -1,4 +1,3 @@
-import { useProfile } from "./service/query/useProfile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,12 +12,14 @@ import {
     X,
 } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
-import {
-    useEditProfile,
-    useChangePassword,
-} from "./service/mutate/useEditProfile";
-import { useState } from "react";
+
 import { toast } from "sonner";
+import { useProfile } from "./service/query/admin/useProfile";
+import { useState } from "react";
+import {
+    useChangePassword,
+    useEditProfile,
+} from "./service/mutate/admin/useEditProfile";
 
 export const ProfilePage = () => {
     const { data, isPending, refetch } = useProfile();
@@ -107,7 +108,7 @@ export const ProfilePage = () => {
         );
     }
 
-    const profile = data?.data?.data;
+    const profile = data?.data;
 
     const handleEdit = () => {
         setEditedData({

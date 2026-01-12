@@ -195,3 +195,16 @@ export type SortField =
     | "lessons"
     | "createdAt";
 export type SortOrder = "asc" | "desc";
+
+
+
+export interface UpdateStudentData {
+  id: string;
+  firstname?: string;
+  lastname?: string;
+  phone?: string;
+  email?: string;
+  bio?: string;
+  languageCode?: string;
+  timezone?: string;
+}

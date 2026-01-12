@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { request } from "../../../../config/request";
 import type { PaymentResponse } from "@/types/admin-type";
+import { request } from "@/config/request";
 
 export const usePaymentStats = () => {
     return useQuery<PaymentResponse>({

@@ -1,8 +1,11 @@
 import { AdminPage } from "@/pages/admin/admin";
 import { DashboardPage } from "@/pages/admin/dashboard";
 import { DeletedTeachersPage } from "@/pages/admin/deletedTeacher";
+import { EarningsPage } from "@/pages/admin/earnings";
+import { LessonPage } from "@/pages/admin/lesson";
 import { PaymentPage } from "@/pages/admin/payment";
 import { ProfilePage } from "@/pages/admin/profile";
+import { StudentsPage } from "@/pages/admin/students";
 import { TeacherPage } from "@/pages/admin/teacher";
 import { BookOpen, DollarSign, GraduationCap, Users } from "lucide-react";
 
@@ -20,12 +23,16 @@ export const adminRoute = [
         page: TeacherPage,
     },
     {
+        path: "/admin/teachers/deleted",
+        page: DeletedTeachersPage,
+    },
+    {
         path: "/admin/students",
-        page: ProfilePage,
+        page: StudentsPage,
     },
     {
         path: "/admin/lessons",
-        page: ProfilePage,
+        page: LessonPage,
     },
     {
         path: "/admin/payments",
@@ -33,17 +40,12 @@ export const adminRoute = [
     },
     {
         path: "/admin/earnings",
-        page: ProfilePage,
+        page: EarningsPage,
     },
 
     {
         path: "/admin/profile",
         page: ProfilePage,
-    },
-
-    {
-        path: "/admin/teachers/deleted",
-        page: DeletedTeachersPage,
     },
 ];
 

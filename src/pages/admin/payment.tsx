@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { usePaymentStats } from "./service/query/usePayment";
 import {
     Clock,
     DollarSign,
@@ -28,6 +27,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { usePaymentStats } from "./service/query/admin/usePayment";
 
 export const PaymentPage = () => {
     const { data, isLoading, isError } = usePaymentStats();

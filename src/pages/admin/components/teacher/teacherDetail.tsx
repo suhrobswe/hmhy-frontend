@@ -16,7 +16,7 @@ import {
     XCircle,
 } from "lucide-react";
 import { toast } from "sonner";
-import { useTeacher } from "../service/query/useTeacher";
+import { useTeacher } from "../../service/query/teacher/useTeacher";
 
 export const TeacherDetailsModal = ({ id, open, onOpenChange }: any) => {
     const { data, isLoading } = useTeacher(id);

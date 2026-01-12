@@ -1,7 +1,7 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useAdmin } from "../service/query/useAdmin";
 import { Calendar, Copy, Loader2, Phone, User } from "lucide-react";
 import { toast } from "sonner";
+import { useAdmin } from "../../service/query/admin/useAdmin";
 
 export const AdminDetailsModal = ({ id, open, onOpenChange }: any) => {
     const { data, isLoading } = useAdmin(id);

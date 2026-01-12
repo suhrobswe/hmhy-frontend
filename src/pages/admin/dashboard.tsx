@@ -11,9 +11,9 @@ import {
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useDashboardStats } from "./service/query/useDashboardStats";
 import { tezkorHarakatlar } from "@/router/admin";
 import Cookies from "js-cookie";
+import { useDashboardStats } from "./service/query/admin/useDashboardStats";
 
 export const DashboardPage = () => {
     const { data, isLoading, isError } = useDashboardStats();

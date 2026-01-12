@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useUpdateAdmin } from "../service/mutate/useEditAdmin";
 import type { Admin } from "@/types/admin-type";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -12,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { useUpdateAdmin } from "../../service/mutate/admin/useEditAdmin";
 
 export const EditAdminModal = ({
     admin,

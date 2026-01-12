@@ -12,14 +12,14 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"; // Select komponentlari qo'shildi
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { useEditTeacher } from "../service/mutate/useEditTeacher";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { TEACHER_SPECIFICATIONS } from "@/types/admin-type";
+import { useEditTeacher } from "../../service/mutate/teacher/useEditTeacher";
 
 interface TeacherEditModalProps {
     teacher: any;
@@ -43,11 +43,10 @@ export const TeacherEditModal = ({
             hourPrice: 0,
             level: "",
             portfolioLink: "",
-            specification: "ENGLISH", // Default qiymat
+            specification: "ENGLISH",
         },
     });
 
-    // Select qiymatini kuzatish uchun
     const specValue = watch("specification");
 
     useEffect(() => {

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useTeacherList } from "./service/query/useTeacherList";
 import {
     Search,
     Mail,
@@ -25,9 +24,7 @@ import {
     type SortOrder,
     type Teacher,
 } from "@/types/admin-type";
-import { TeacherDetailsModal } from "./components/teacherDetail";
 import { toast } from "sonner";
-import { TeacherEditModal } from "./components/teacherEdit";
 import {
     Select,
     SelectContent,
@@ -35,13 +32,15 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { TeacherDeleteModal } from "./components/teacherDelete";
-import { useChangeTeacherStatus } from "./service/mutate/useChangeActiveTeacher";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { useTeacherList } from "./service/query/teacher/useTeacherList";
+import { useChangeTeacherStatus } from "./service/mutate/teacher/useChangeActiveTeacher";
+import { TeacherDeleteModal } from "./components/teacher/teacherDelete";
+import { TeacherEditModal } from "./components/teacher/teacherEdit";
+import { TeacherDetailsModal } from "./components/teacher/teacherDetail";
 
 export const TeacherPage = () => {
-    // Pagination States
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
 
@@ -327,7 +326,6 @@ export const TeacherPage = () => {
                 </div>
             </div>
 
-            {/* Sort Buttons - Qayta tiklandi */}
             <div className="flex items-center gap-8 text-[13px] font-medium text-gray-700 px-2 py-2 pt-4">
                 <span className="text-gray-400">Sort by:</span>
                 <button
@@ -525,7 +523,6 @@ export const TeacherPage = () => {
                 )}
             </div>
 
-            {/* Pagination Controls */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4 border-t border-gray-100 mt-6">
                 <div className="flex items-center gap-6 text-sm text-gray-600">
                     <p>

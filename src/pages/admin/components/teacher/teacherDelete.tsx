@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useDeleteTeacher } from "../service/mutate/useDeleteTeacher";
 import {
     Dialog,
     DialogContent,
@@ -12,6 +11,7 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import type { TeacherDeleteModalProps } from "@/types/admin-type";
+import { useDeleteTeacher } from "../../service/mutate/teacher/useDeleteTeacher";
 
 export const TeacherDeleteModal = ({
     teacher,
