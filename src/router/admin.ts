@@ -1,8 +1,9 @@
 import { AdminPage } from "@/pages/admin/admin";
+import { TeacherLessonsPage } from "@/pages/admin/components/teacher/TeacherLesson";
 import { DashboardPage } from "@/pages/admin/dashboard";
 import { DeletedTeachersPage } from "@/pages/admin/deletedTeacher";
 import { EarningsPage } from "@/pages/admin/earnings";
-import { LessonPage } from "@/pages/admin/lesson";
+import { LessonsPage } from "@/pages/admin/lesson";
 import { PaymentPage } from "@/pages/admin/payment";
 import { ProfilePage } from "@/pages/admin/profile";
 import { StudentsPage } from "@/pages/admin/students";
@@ -32,7 +33,11 @@ export const adminRoute = [
     },
     {
         path: "/admin/lessons",
-        page: LessonPage,
+        page: LessonsPage,
+    },
+    {
+        path: "/admin/lesson/:id",
+        page: TeacherLessonsPage,
     },
     {
         path: "/admin/payments",
