@@ -45,7 +45,8 @@ export function AppHeader({ role }: { role: Role }) {
                     onClick={() => {
                         Cookies.remove("token2");
                         Cookies.remove("role");
-                        window.location.href = "/login/admin";
+                        Cookies.remove("username");
+                        window.location.href = "/login";
                     }}
                 >
                     <LogOut className="h-5 w-5" />

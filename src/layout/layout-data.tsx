@@ -2,7 +2,6 @@ import {
     Users,
     User,
     Wallet,
-    CreditCard,
     BookOpen,
     GraduationCap,
     CalendarDays,
@@ -18,7 +17,6 @@ export const links = {
         { title: "Students", url: "/admin/students", icon: GraduationCap },
         { title: "Lessons", url: "/admin/lessons", icon: BookOpen },
         { title: "Payments", url: "/admin/payments", icon: Wallet },
-        { title: "Earnings", url: "/admin/earnings", icon: CreditCard },
         { title: "Profile", url: "/admin/profile", icon: User },
     ],
 
@@ -32,8 +30,8 @@ export const links = {
     ],
 
     teacher: [
-        { title: "Dashboard", url: "/teacher/dashboard", icon: BookOpen },
-        { title: "Students", url: "/teacher/students", icon: CalendarDays },
+        { title: "Lessons", url: "/teacher/lessons", icon: BookOpen },
+        { title: "Schedule", url: "/teacher/schedule", icon: CalendarDays },
         { title: "Payments", url: "/teacher/payments", icon: Wallet },
         { title: "Profile", url: "/teacher/profile", icon: User },
     ],

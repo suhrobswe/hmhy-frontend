@@ -59,11 +59,16 @@ export interface DeleteConfirmState {
 
 // --- Teacher Tiplari ---
 export const TEACHER_SPECIFICATIONS = {
-    IELTS: "IELTS",
-    SPEAKING: "SPEAKING",
-    GRAMMAR: "GRAMMAR",
-    BUSINESS: "BUSINESS",
-    KIDS: "KIDS",
+    ENGLISH: "ENGLISH",
+    RUSSIAN: "RUSSIAN",
+    DEUTSCH: "DEUTSCH",
+    SPANISH: "SPANISH",
+    FRENCH: "FRENCH",
+    ITALIAN: "ITALIAN",
+    JAPANESE: "JAPANESE",
+    CHINESE: "CHINESE",
+    ARABIC: "ARABIC",
+    KOREAN: "KOREAN",
 } as const;
 
 export type TeacherSpecification = keyof typeof TEACHER_SPECIFICATIONS;
@@ -91,6 +96,23 @@ export interface Teacher {
     lessonsCount: number;
     createdAt: string;
     updatedAt: string;
+}
+
+export interface EditProfile {
+    fullName: string;
+    phoneNumber: string;
+    language: string;
+    specification: TeacherSpecification | null;
+    level: TeacherLevel | null;
+    description: string | null;
+    hourPrice: number | null;
+    experience: string | null;
+    portfolioLink: string | null;
+}
+
+export interface ChangePassword {
+    currentPassword: string;
+    newPassword: string;
 }
 
 export type TeacherSortField =

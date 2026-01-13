@@ -34,7 +34,7 @@ export const TeacherLessonsPage = () => {
 
     const { data: teacherData } = useTeacher(id);
 
-    const { data, isLoading: lessonsLoading } = useTeacherLessons(id, {
+    const { data: _, isLoading: lessonsLoading } = useTeacherLessons(id, {
         page: page,
         limit: 10,
     });
@@ -144,7 +144,7 @@ export const TeacherLessonsPage = () => {
                                             <TableCell>
                                                 <div className="text-sm font-medium text-slate-900">
                                                     {lesson.student
-                                                        ? `${lesson.student.firstName} ${lesson.student.lastName}` // firstName va lastName (Katta harfda)
+                                                        ? `${lesson.student.firstName} ${lesson.student.lastName}`
                                                         : "N/A"}
                                                 </div>
                                             </TableCell>

@@ -11,9 +11,21 @@ import { Link } from "react-router-dom";
 import { ActiveLink } from "@/components/active-link";
 import { links } from "./layout-data";
 import type { Role } from "@/types/auth-type";
+import Cookies from "js-cookie";
 
 export function AppSidebar({ role }: { role: Role }) {
-    const menuLinks = links[role] ?? [];
+    const isActive = Cookies.get("isActive") === "true";
+
+    let menuLinks = links[role] ?? [];
+
+    if (role === "teacher" && !isActive) {
+        menuLinks = menuLinks.filter(
+            (item) =>
+                item.url.includes("profile") ||
+                item.title.toLowerCase().includes("profile")
+        );
+    }
+
     const homePath =
         role === "teacher" ? "/teacher/dashboard" : "/admin/dashboard";
 
@@ -21,7 +33,11 @@ export function AppSidebar({ role }: { role: Role }) {
         <Sidebar className="bg-[#1E2939]! border-none">
             <SidebarHeader className="bg-[#1E2939]! border-b border-gray-700/50">
                 <Link
-                    to={homePath}
+                    to={
+                        isActive || role === "admin"
+                            ? homePath
+                            : "/teacher/profile"
+                    }
                     className="flex items-center justify-center px-4 py-5"
                 >
                     <div className="inline-flex items-center justify-center">

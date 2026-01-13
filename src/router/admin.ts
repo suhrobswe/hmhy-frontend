@@ -2,7 +2,6 @@ import { AdminPage } from "@/pages/admin/admin";
 import { TeacherLessonsPage } from "@/pages/admin/components/teacher/TeacherLesson";
 import { DashboardPage } from "@/pages/admin/dashboard";
 import { DeletedTeachersPage } from "@/pages/admin/deletedTeacher";
-import { EarningsPage } from "@/pages/admin/earnings";
 import { LessonsPage } from "@/pages/admin/lesson";
 import { PaymentPage } from "@/pages/admin/payment";
 import { ProfilePage } from "@/pages/admin/profile";
@@ -42,10 +41,6 @@ export const adminRoute = [
     {
         path: "/admin/payments",
         page: PaymentPage,
-    },
-    {
-        path: "/admin/earnings",
-        page: EarningsPage,
     },
 
     {
