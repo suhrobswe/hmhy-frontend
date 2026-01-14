@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react";
+
 // --- Umumiy Tiplar ---
 export interface MessageTranslations {
     uz: string;
@@ -225,4 +227,12 @@ export interface PaymentStats {
         status: string;
         provider: string;
     }>;
+}
+
+export interface StatsCardProps {
+    label: string;
+    value: number | string;
+    icon: LucideIcon;
+    iconColor: string;
+    labelColor: string;
 }

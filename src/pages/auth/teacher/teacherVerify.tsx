@@ -69,11 +69,11 @@ export const TeacherOTPVerify = () => {
         onSuccess: (res) => {
             Cookies.set("token2", res.accessToken);
             Cookies.set("role", res.role);
-            toast.success("Hisob muvaffaqiyatli faollashtirildi!");
+            toast.success("Hisob muvaffaqiyatli faollashtirildi!", {position: "top-right"});
             setTimeout(() => navigate("/teacher/profile"), 1500);
         },
         onError: (err: any) =>
-            toast.error(err?.response?.data?.message || "Kod noto'g'ri"),
+            toast.error(err?.response?.data?.message || "Kod noto'g'ri", {position: "top-right"}),
     });
 
     const isLoading = sendOtpMutation.isPending || verifyOtpMutation.isPending;

@@ -70,10 +70,10 @@ export const TeacherLogin = () => {
             });
 
             isActive
-                ? navigate("/teacher/dashboard")
+                ? navigate("/teacher/lessons")
                 : navigate("/teacher/profile");
         } catch (err: any) {
-            toast.error(err?.response?.data?.message || "Login amalga oshmadi");
+            toast.error(err?.response?.data?.message || "Login amalga oshmadi", {position: "top-right"});
         } finally {
             setLoading(false);
         }

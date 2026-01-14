@@ -27,7 +27,7 @@ export function AppSidebar({ role }: { role: Role }) {
     }
 
     const homePath =
-        role === "teacher" ? "/teacher/dashboard" : "/admin/dashboard";
+        role === "teacher" ? "/teacher/lessons" : "/admin/dashboard";
 
     return (
         <Sidebar className="bg-[#1E2939]! border-none">

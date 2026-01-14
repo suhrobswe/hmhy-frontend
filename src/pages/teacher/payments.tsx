@@ -1,4 +1,3 @@
-
 export const Payments = () => {
-  return 
-}
+    return;
+};

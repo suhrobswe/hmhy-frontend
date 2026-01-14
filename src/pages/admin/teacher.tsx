@@ -20,9 +20,9 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
     TEACHER_SPECIFICATIONS,
-    type SortField,
     type SortOrder,
     type Teacher,
+    type TeacherSortField,
 } from "@/types/admin-type";
 import { toast } from "sonner";
 import {
@@ -59,7 +59,7 @@ export const TeacherPage = () => {
     const [levelFilter, setLevelFilter] = useState<string>("all");
     const [languageFilter, setLanguageFilter] = useState<string>("all");
 
-    const [sortField, setSortField] = useState<SortField>("name");
+    const [sortField, setSortField] = useState<TeacherSortField>("name");
     const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
     const [editTeacher, setEditTeacher] = useState<any | null>(null);
@@ -81,7 +81,7 @@ export const TeacherPage = () => {
         setIsDeleteModalOpen(true);
     };
 
-    const toggleSort = (field: SortField) => {
+    const toggleSort = (field: TeacherSortField) => {
         if (sortField === field) {
             setSortOrder(sortOrder === "asc" ? "desc" : "asc");
         } else {
@@ -209,7 +209,7 @@ export const TeacherPage = () => {
         setPage(1);
     };
 
-    const getSortIcon = (field: SortField) => {
+    const getSortIcon = (field: TeacherSortField) => {
         if (sortField !== field)
             return <ArrowUpDown className="w-3.5 h-3.5 text-gray-400" />;
         return sortOrder === "asc" ? (

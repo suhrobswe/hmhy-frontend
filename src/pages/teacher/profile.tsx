@@ -1,35 +1,19 @@
 import { useState } from "react";
-import {
-    User,
-    Phone,
-    Briefcase,
-    Star,
-    DollarSign,
-    CreditCard,
-    Languages,
-    FileText,
-    Edit3,
-    Lock,
-    Loader2,
-    Save,
-    X,
-} from "lucide-react";
+import { Edit3, Lock, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import { toast } from "sonner";
-import { useProfile } from "./service/useProfile";
-import { useChangePassword, useEditProfile } from "./service/useTeacherEdit";
 import { TEACHER_SPECIFICATIONS } from "@/types/admin-type";
+import { useProfile } from "./service/query/useProfile";
+import {
+    useChangePassword,
+    useEditProfile,
+} from "./service/mutate/useTeacherEdit";
+import { ProfileSkeleton } from "./components/profile-skeleton";
+import { ProfileDetails } from "./components/profile-details";
 
 type SpecificationType = keyof typeof TEACHER_SPECIFICATIONS;
 
@@ -56,26 +40,17 @@ export const TeacherProfile = () => {
     });
 
     const profile = data?.data;
-
     const { mutate: updateProfile, isPending: isUpdating } = useEditProfile();
     const { mutate: changePassword, isPending: isChangingPass } =
         useChangePassword();
 
-    if (isLoading) {
+    if (isLoading) return <ProfileSkeleton />;
+    if (error || !profile)
         return (
-            <div className="flex h-screen w-full items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <div className="p-8 text-center text-red-500">
+                Xatolik yuz berdi.
             </div>
         );
-    }
-
-    if (error || !profile) {
-        return (
-            <div className="p-8 text-center text-red-500 font-medium">
-                Profil ma'lumotlarini yuklashda xatolik yuz berdi.
-            </div>
-        );
-    }
 
     const handleEditClick = () => {
         setEditedData({
@@ -103,44 +78,27 @@ export const TeacherProfile = () => {
 
     const handleSaveProfile = () => {
         const payload: any = {
-            fullName: editedData.fullName,
-            phoneNumber: editedData.phoneNumber,
-            experience: editedData.experience,
-            level: editedData.level,
+            ...editedData,
             hourPrice: editedData.hourPrice
                 ? Number(editedData.hourPrice)
                 : undefined,
-            cardNumber: editedData.cardNumber,
-            specification: editedData.specification || undefined,
-            description: editedData.description,
         };
-
-        Object.keys(payload).forEach((key) => {
-            if (payload[key] === "" || payload[key] === null) {
-                delete payload[key];
-            }
-        });
-
         updateProfile(payload, {
             onSuccess: () => {
-                toast.success("Profil muvaffaqiyatli yangilandi!");
+                toast.success("Yangilandi!", { position: "top-right" });
                 setIsEditing(false);
                 refetch();
             },
-            onError: (err: any) => {
-                const message = err?.response?.data?.message;
-                toast.error(
-                    Array.isArray(message)
-                        ? message[0]
-                        : message || "Xatolik yuz berdi"
-                );
-            },
+            onError: (err: any) =>
+                toast.error(err?.response?.data?.message || "Xatolik", {
+                    position: "top-right",
+                }),
         });
     };
 
     const handlePasswordChange = () => {
         if (passwordData.newPassword !== passwordData.confirmPassword) {
-            toast.error("Yangi parollar mos kelmadi!");
+            toast.error("Parollar mos kelmadi!", { position: "top-right" });
             return;
         }
         changePassword(
@@ -150,15 +108,15 @@ export const TeacherProfile = () => {
             },
             {
                 onSuccess: () => {
-                    toast.success("Parol o'zgartirildi!");
+                    toast.success("Parol o'zgartirildi!", {
+                        position: "top-right",
+                    });
                     handleCancel();
                 },
-                onError: (err: any) => {
-                    toast.error(
-                        err?.response?.data?.message ||
-                            "Parol o'zgartirishda xatolik"
-                    );
-                },
+                onError: (err: any) =>
+                    toast.error(err?.response?.data?.message || "Xatolik", {
+                        position: "top-right",
+                    }),
             }
         );
     };
@@ -175,14 +133,14 @@ export const TeacherProfile = () => {
                             <Button
                                 variant="outline"
                                 onClick={handleEditClick}
-                                className="bg-white border-gray-300 text-black hover:bg-slate-50"
+                                className="bg-white text-black"
                             >
                                 <Edit3 className="mr-2 h-4 w-4" /> Edit Profile
                             </Button>
                             <Button
                                 variant="outline"
                                 onClick={() => setIsChangingPassword(true)}
-                                className="bg-white border-gray-300 text-black hover:bg-slate-50"
+                                className="bg-white text-black"
                             >
                                 <Lock className="mr-2 h-4 w-4" /> Change
                                 Password
@@ -197,7 +155,7 @@ export const TeacherProfile = () => {
                         <div className="relative -top-12 flex flex-col items-center sm:flex-row sm:items-end sm:gap-6">
                             <Avatar className="h-24 w-24 border-4 border-white shadow-md">
                                 <AvatarImage src={profile?.imageUrl} />
-                                <AvatarFallback className="bg-slate-200 text-xl font-bold">
+                                <AvatarFallback className="bg-slate-200">
                                     {profile?.fullName?.charAt(0)}
                                 </AvatarFallback>
                             </Avatar>
@@ -216,7 +174,7 @@ export const TeacherProfile = () => {
                 {isChangingPassword ? (
                     <Card className="border-none shadow-sm p-8 bg-white">
                         <div className="flex items-center gap-2 mb-8">
-                            <Lock className="h-5 w-5 text-gray-700" />
+                            <Lock className="h-5 w-5" />
                             <h2 className="text-lg font-semibold">
                                 Change Password
                             </h2>
@@ -265,13 +223,13 @@ export const TeacherProfile = () => {
                                 <Button
                                     onClick={handlePasswordChange}
                                     disabled={isChangingPass}
-                                    className="bg-black text-white hover:bg-gray-800"
+                                    className="bg-black text-white"
                                 >
                                     {isChangingPass ? (
                                         <Loader2 className="animate-spin h-4 w-4 mr-2" />
                                     ) : (
                                         <Lock className="h-4 w-4 mr-2" />
-                                    )}
+                                    )}{" "}
                                     Update Password
                                 </Button>
                                 <Button
@@ -285,236 +243,15 @@ export const TeacherProfile = () => {
                     </Card>
                 ) : (
                     <Card className="border-none shadow-sm bg-white">
-                        <CardHeader className="border-b bg-slate-50/50 py-4">
-                            <div className="flex items-center gap-2">
-                                <User className="h-5 w-5 text-slate-500" />
-                                <CardTitle className="text-lg font-semibold">
-                                    Profile Information
-                                </CardTitle>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="grid gap-6 p-8 md:grid-cols-2">
-                            <div className="space-y-2">
-                                <Label className="flex items-center text-xs font-medium text-slate-500 uppercase">
-                                    <User className="mr-2 h-3.5 w-3.5" /> FULL
-                                    NAME
-                                </Label>
-                                {isEditing ? (
-                                    <Input
-                                        value={editedData.fullName}
-                                        onChange={(e) =>
-                                            setEditedData({
-                                                ...editedData,
-                                                fullName: e.target.value,
-                                            })
-                                        }
-                                    />
-                                ) : (
-                                    <div className="bg-slate-50 border border-slate-200 rounded-md px-4 py-2.5 text-sm font-medium">
-                                        {profile?.fullName || "Not set"}
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label className="flex items-center text-xs font-medium text-slate-500 uppercase">
-                                    <Phone className="mr-2 h-3.5 w-3.5" /> PHONE
-                                </Label>
-                                {isEditing ? (
-                                    <Input
-                                        value={editedData.phoneNumber}
-                                        onChange={(e) =>
-                                            setEditedData({
-                                                ...editedData,
-                                                phoneNumber: e.target.value,
-                                            })
-                                        }
-                                    />
-                                ) : (
-                                    <div className="bg-slate-50 border border-slate-200 rounded-md px-4 py-2.5 text-sm font-medium">
-                                        {profile?.phoneNumber || "Not set"}
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label className="flex items-center text-xs font-medium text-slate-500 uppercase">
-                                    <Languages className="mr-2 h-3.5 w-3.5" />{" "}
-                                    TEACHING LANGUAGE
-                                </Label>
-                                {isEditing ? (
-                                    <Select
-                                        value={editedData.specification}
-                                        onValueChange={(
-                                            val: SpecificationType
-                                        ) =>
-                                            setEditedData({
-                                                ...editedData,
-                                                specification: val,
-                                            })
-                                        }
-                                    >
-                                        <SelectTrigger className="bg-white">
-                                            <SelectValue placeholder="Select Language" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {Object.values(
-                                                TEACHER_SPECIFICATIONS
-                                            ).map((lang) => (
-                                                <SelectItem
-                                                    key={lang}
-                                                    value={lang}
-                                                >
-                                                    {lang}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                ) : (
-                                    <div className="bg-slate-50 border border-slate-200 rounded-md px-4 py-2.5 text-sm font-medium">
-                                        {profile?.specification || "Not set"}
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label className="flex items-center text-xs font-medium text-slate-500 uppercase">
-                                    <Briefcase className="mr-2 h-3.5 w-3.5" />{" "}
-                                    EXPERIENCE
-                                </Label>
-                                {isEditing ? (
-                                    <Input
-                                        value={editedData.experience}
-                                        onChange={(e) =>
-                                            setEditedData({
-                                                ...editedData,
-                                                experience: e.target.value,
-                                            })
-                                        }
-                                    />
-                                ) : (
-                                    <div className="bg-slate-50 border border-slate-200 rounded-md px-4 py-2.5 text-sm font-medium">
-                                        {profile?.experience || "Not set"}
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label className="flex items-center text-xs font-medium text-slate-500 uppercase">
-                                    <Star className="mr-2 h-3.5 w-3.5" /> LEVEL
-                                </Label>
-                                {isEditing ? (
-                                    <Input
-                                        value={editedData.level}
-                                        onChange={(e) =>
-                                            setEditedData({
-                                                ...editedData,
-                                                level: e.target.value,
-                                            })
-                                        }
-                                    />
-                                ) : (
-                                    <div className="bg-slate-50 border border-slate-200 rounded-md px-4 py-2.5 text-sm font-medium">
-                                        {profile?.level || "Not set"}
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label className="flex items-center text-xs font-medium text-slate-500 uppercase">
-                                    <DollarSign className="mr-2 h-3.5 w-3.5" />{" "}
-                                    HOUR PRICE (UZS)
-                                </Label>
-                                {isEditing ? (
-                                    <Input
-                                        type="number"
-                                        value={editedData.hourPrice}
-                                        onChange={(e) =>
-                                            setEditedData({
-                                                ...editedData,
-                                                hourPrice: e.target.value,
-                                            })
-                                        }
-                                    />
-                                ) : (
-                                    <div className="bg-slate-50 border border-slate-200 rounded-md px-4 py-2.5 text-sm font-medium">
-                                        {profile?.hourPrice
-                                            ? `${profile.hourPrice.toLocaleString()} UZS`
-                                            : "Not set"}
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label className="flex items-center text-xs font-medium text-slate-500 uppercase">
-                                    <CreditCard className="mr-2 h-3.5 w-3.5" />{" "}
-                                    CARD NUMBER
-                                </Label>
-                                {isEditing ? (
-                                    <Input
-                                        value={editedData.cardNumber}
-                                        onChange={(e) =>
-                                            setEditedData({
-                                                ...editedData,
-                                                cardNumber: e.target.value,
-                                            })
-                                        }
-                                        maxLength={16}
-                                    />
-                                ) : (
-                                    <div className="bg-slate-50 border border-slate-200 rounded-md px-4 py-2.5 text-sm font-medium">
-                                        {profile?.cardNumber || "Not set"}
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="space-y-2 md:col-span-2">
-                                <Label className="flex items-center text-xs font-medium text-slate-500 uppercase">
-                                    <FileText className="mr-2 h-3.5 w-3.5" />{" "}
-                                    BIO
-                                </Label>
-                                {isEditing ? (
-                                    <textarea
-                                        className="flex min-h-24 w-full rounded-md border border-input bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-400"
-                                        value={editedData.description}
-                                        onChange={(e) =>
-                                            setEditedData({
-                                                ...editedData,
-                                                description: e.target.value,
-                                            })
-                                        }
-                                    />
-                                ) : (
-                                    <div className="min-h-20 w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
-                                        {profile?.description || "No bio added"}
-                                    </div>
-                                )}
-                            </div>
-
-                            {isEditing && (
-                                <div className="flex items-center gap-3 pt-4 md:col-span-2 border-t">
-                                    <Button
-                                        onClick={handleSaveProfile}
-                                        disabled={isUpdating}
-                                        className="bg-black text-white hover:bg-gray-800"
-                                    >
-                                        {isUpdating ? (
-                                            <Loader2 className="animate-spin h-4 w-4 mr-2" />
-                                        ) : (
-                                            <Save className="h-4 w-4 mr-2" />
-                                        )}
-                                        Save Changes
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        onClick={handleCancel}
-                                        disabled={isUpdating}
-                                    >
-                                        <X className="h-4 w-4 mr-2" /> Cancel
-                                    </Button>
-                                </div>
-                            )}
-                        </CardContent>
+                        <ProfileDetails
+                            isEditing={isEditing}
+                            profile={profile}
+                            editedData={editedData}
+                            setEditedData={setEditedData}
+                            isUpdating={isUpdating}
+                            onSave={handleSaveProfile}
+                            onCancel={handleCancel}
+                        />
                     </Card>
                 )}
             </div>
