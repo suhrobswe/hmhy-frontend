@@ -2,8 +2,8 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./navbar";
 import Cookies from "js-cookie";
-import type { Role } from "@/types/auth-type";
 import { AppHeader } from "./header";
+import type { Role } from "@/types";
 
 export const MainLayout = () => {
     const location = useLocation(); 

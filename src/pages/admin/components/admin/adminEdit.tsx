@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Admin } from "@/types/admin-type";
+import type { Admin } from "@/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {

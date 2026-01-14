@@ -10,14 +10,9 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import type { TeacherDeleteModalProps } from "@/types/admin-type";
 import { useDeleteTeacher } from "../../service/mutate/teacher/useDeleteTeacher";
 
-export const TeacherDeleteModal = ({
-    teacher,
-    open,
-    onOpenChange,
-}: TeacherDeleteModalProps) => {
+export const TeacherDeleteModal = ({ teacher, open, onOpenChange }: any) => {
     const [reason, setReason] = useState("");
     const { mutate, isPending } = useDeleteTeacher();
 

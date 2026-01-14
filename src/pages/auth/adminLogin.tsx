@@ -15,9 +15,9 @@ import { Spinner } from "@/components/ui/spinner";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { useAdminLogin } from "./service/mutate/useAdminLogin";
-import type { AdminLoginInput, LoginResponse } from "@/types/auth-type";
 import { PasswordInput } from "@/components/ui/password-input";
 import { useNavigate } from "react-router-dom";
+import type { AdminLoginInput, LoginResponse } from "@/types";
 
 const formSchema = z.object({
     username: z.string().min(2).max(50),

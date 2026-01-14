@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
-import { TEACHER_SPECIFICATIONS } from "@/types/admin-type";
 import { useProfile } from "./service/query/useProfile";
 import {
     useChangePassword,
@@ -14,6 +13,7 @@ import {
 } from "./service/mutate/useTeacherEdit";
 import { ProfileSkeleton } from "./components/profile-skeleton";
 import { ProfileDetails } from "./components/profile-details";
+import type { TEACHER_SPECIFICATIONS } from "@/types/admin-type";
 
 type SpecificationType = keyof typeof TEACHER_SPECIFICATIONS;
 
@@ -123,7 +123,7 @@ export const TeacherProfile = () => {
 
     return (
         <div className="min-h-screen p-4 md:p-8">
-            <div className="mx-auto max-w-7xl space-y-6">
+            <div className="mx-auto max-w-8xl space-y-6">
                 <div className="flex items-center justify-between">
                     <h1 className="text-3xl font-bold text-gray-900">
                         My Profile

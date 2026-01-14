@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/select";
 
 import { useQueryClient } from "@tanstack/react-query";
-import type { Admin } from "@/types/admin-type";
+import type { Admin } from "@/types";
 import { toast } from "sonner";
 import { useAdminList } from "./service/query/admin/useAdminList";
 import { useCreateAdmin } from "./service/mutate/admin/useCreateAdmin";

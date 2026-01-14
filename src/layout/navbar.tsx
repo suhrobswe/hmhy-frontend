@@ -10,8 +10,8 @@ import {
 import { Link } from "react-router-dom";
 import { ActiveLink } from "@/components/active-link";
 import { links } from "./layout-data";
-import type { Role } from "@/types/auth-type";
 import Cookies from "js-cookie";
+import type { Role } from "@/types";
 
 export function AppSidebar({ role }: { role: Role }) {
     const isActive = Cookies.get("isActive") === "true";

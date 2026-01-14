@@ -2,8 +2,8 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { LogOut, User } from "lucide-react";
 import Cookies from "js-cookie";
-import type { Role } from "@/types/auth-type";
 import { useNavigate } from "react-router-dom";
+import type { Role } from "@/types";
 
 export function AppHeader({ role }: { role: Role }) {
     const navigate = useNavigate();

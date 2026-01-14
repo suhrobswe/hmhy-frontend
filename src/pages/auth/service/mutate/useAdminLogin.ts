@@ -1,5 +1,5 @@
 import { request } from "@/config/request";
-import type { AdminLoginInput, LoginResponse } from "@/types/auth-type";
+import type { AdminLoginInput, LoginResponse } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
 export const useAdminLogin = () => {
