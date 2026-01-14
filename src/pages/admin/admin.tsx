@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/select";
 
 import { useQueryClient } from "@tanstack/react-query";
-import type { Admin } from "@/types";
+import type { Admin } from "@/types/admin-type";
 import { toast } from "sonner";
 import { useAdminList } from "./service/query/admin/useAdminList";
 import { useCreateAdmin } from "./service/mutate/admin/useCreateAdmin";
@@ -272,7 +272,7 @@ export const AdminPage = () => {
                                 <Button
                                     variant="destructive"
                                     onClick={() => setAdminToDelete(admin)}
-                                    className="h-9 px-4 bg-red-600 hover:bg-red-700 cursor-pointer"
+                                    className="h-9 px-4 bg-red-600 text-white hover:bg-red-700 cursor-pointer"
                                 >
                                     Delete
                                 </Button>

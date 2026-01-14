@@ -18,8 +18,8 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
-import { TEACHER_SPECIFICATIONS } from "@/types/admin-type";
 import { useEditTeacher } from "../../service/mutate/teacher/useEditTeacher";
+import { TEACHER_SPECIFICATIONS } from "@/types/admin-type";
 
 interface TeacherEditModalProps {
     teacher: any;
@@ -148,7 +148,7 @@ export const TeacherEditModal = ({
                             </SelectTrigger>
                             <SelectContent className="bg-white">
                                 {Object.values(TEACHER_SPECIFICATIONS).map(
-                                    (spec) => (
+                                    (spec: any) => (
                                         <SelectItem key={spec} value={spec}>
                                             {spec.charAt(0) +
                                                 spec.slice(1).toLowerCase()}

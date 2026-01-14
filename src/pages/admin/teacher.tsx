@@ -509,7 +509,7 @@ export const TeacherPage = () => {
                                     </Button>
                                     <Button
                                         variant="destructive"
-                                        className="h-9 px-4 text-xs font-semibold bg-red-600 hover:bg-red-700 cursor-pointer"
+                                        className="h-9 px-4 text-xs font-semibold  text-white bg-red-600 hover:bg-red-700 cursor-pointer"
                                         onClick={() =>
                                             handleDeleteClick(teacher)
                                         }
@@ -552,7 +552,7 @@ export const TeacherPage = () => {
                             <SelectTrigger className="h-8 w-30 bg-white border-gray-200">
                                 <SelectValue />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className="">
                                 <SelectItem value="5">5 per page</SelectItem>
                                 <SelectItem value="10">10 per page</SelectItem>
                                 <SelectItem value="20">20 per page</SelectItem>

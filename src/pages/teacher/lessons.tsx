@@ -107,7 +107,6 @@ export const TeacherLessons = () => {
                     </div>
                 ) : (
                     <div className="flex flex-col items-center justify-center min-h-75 bg-white border border-dashed rounded-xl">
-                        {/* Empty state kodi */}
                         <div className="p-4 mb-4 rounded-full bg-slate-50">
                             <BookOpen className="w-12 h-12 text-slate-300" />
                         </div>

@@ -13,7 +13,7 @@ export const Schedule = () => {
     const [selectedDate, setSelectedDate] = useState(
         format(new Date(), "yyyy-MM-dd")
     );
-    const [isCreating, setIsCreating] = useState(false); // Forma holati
+    const [isCreating, setIsCreating] = useState(false); 
 
     const { data, isPending } = useLessonsList("all", selectedDate);
     const lessons = data?.data || [];
@@ -49,7 +49,6 @@ export const Schedule = () => {
                 onDateChange={handleDateChange}
             />
 
-            {/* Agar yaratish holati bo'lsa formani ko'rsatamiz */}
             {isCreating ? (
                 <CreateLessonForm
                     selectedDate={selectedDate}

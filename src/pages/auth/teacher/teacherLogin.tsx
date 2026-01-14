@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/form";
 import Cookies from "js-cookie";
 
-// Validatsiya sxemasi
 const formSchema = z.object({
     email: z
         .string()
@@ -96,7 +95,6 @@ export const TeacherLogin = () => {
                 </CardHeader>
 
                 <CardContent className="space-y-6">
-                    {/* Google Login Button */}
                     <Button
                         variant="outline"
                         type="button"

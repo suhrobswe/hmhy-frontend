@@ -1,6 +1,5 @@
 import type { LucideIcon } from "lucide-react";
 
-// --- Umumiy Tiplar ---
 export interface MessageTranslations {
     uz: string;
     en: string;
@@ -24,11 +23,11 @@ export interface ApiResponse<T> extends Partial<PaginationData> {
 
 export type SortOrder = "asc" | "desc";
 
-// --- Admin Tiplari ---
 export interface Admin {
+    phoneNumber: any;
     id: string;
     username: string;
-    phone: string; // phoneNumber bilan bir xillashtirildi
+    phone: string;
     role: string;
     createdAt: string;
     updatedAt: string;
@@ -42,7 +41,6 @@ export interface CreateAdmin {
 
 export type EditAdmin = Partial<CreateAdmin>;
 
-// --- Admin UI State ---
 export interface DetailsModalState {
     isOpen: boolean;
     admin: Admin | null;
@@ -59,7 +57,6 @@ export interface DeleteConfirmState {
     admin: Admin | null;
 }
 
-// --- Teacher Tiplari ---
 export const TEACHER_SPECIFICATIONS = {
     ENGLISH: "ENGLISH",
     RUSSIAN: "RUSSIAN",
@@ -91,7 +88,7 @@ export interface Teacher {
     level: TeacherLevel | null;
     description: string | null;
     hourPrice: number | null;
-    price: number; // Umumiy narx yoki joriy narx
+    price: number;
     rating: string;
     experience: string | null;
     portfolioLink: string | null;
@@ -140,7 +137,6 @@ export interface TeacherFilters {
     limit?: number;
 }
 
-// --- Student & Lesson Tiplari ---
 export const LessonStatus = {
     AVAILABLE: "AVAILABLE",
     BOOKED: "BOOKED",
@@ -237,7 +233,6 @@ export interface StatsCardProps {
     labelColor: string;
 }
 
-
 export interface IStatsDetail {
     amount: number;
     count: number;
@@ -265,6 +260,5 @@ export interface AdminLoginInput {
     username: string;
     password: string;
 }
-
 
 export type Role = "admin" | "teacher" | "superadmin";

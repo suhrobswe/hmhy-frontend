@@ -92,11 +92,9 @@ export const LessonsPage = () => {
                                     />
                                 </PaginationItem>
 
-                                {/* Sahifalar raqami (ixtiyoriy, chiroyli ko'rinishi uchun) */}
                                 {[...Array(pagination.totalPages)].map(
                                     (_, i) => {
                                         const pageNum = i + 1;
-                                        // Faqat joriy sahifa atrofidagilarni ko'rsatish
                                         if (
                                             pageNum === 1 ||
                                             pageNum === pagination.totalPages ||
