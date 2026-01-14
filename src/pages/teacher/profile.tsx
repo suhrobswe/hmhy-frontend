@@ -13,7 +13,7 @@ import {
 } from "./service/mutate/useTeacherEdit";
 import { ProfileSkeleton } from "./components/profile-skeleton";
 import { ProfileDetails } from "./components/profile-details";
-import type { TEACHER_SPECIFICATIONS } from "@/types/admin-type";
+import type { TEACHER_SPECIFICATIONS } from "@/types";
 
 type SpecificationType = keyof typeof TEACHER_SPECIFICATIONS;
 

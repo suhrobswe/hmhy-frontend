@@ -1,6 +1,6 @@
 import { request } from "@/config/request";
 import { useQuery } from "@tanstack/react-query";
-import type { ApiResponse, Lesson, PaginationData } from "@/types/admin-type";
+import type { ApiResponse, Lesson, PaginationData } from "@/types";
 
 interface UseTeacherLessonsParams {
     page?: number;

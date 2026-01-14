@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import type { Teacher } from "@/types/admin-type";
+import type { Teacher } from "@/types";
 
 interface TeacherCardProps {
     teacher: Teacher;

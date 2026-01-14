@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import type { StatsCardProps } from "@/types/admin-type";
+import type { StatsCardProps } from "@/types";
 
 export const StatsCard = ({
     label,

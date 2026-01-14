@@ -10,10 +10,9 @@ import {
     Wallet,
     ArrowRight,
 } from "lucide-react";
-import { LessonStatus, type Lesson } from "@/types/admin-type";
+import { LessonStatus, type Lesson } from "@/types";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -59,7 +58,6 @@ export const LessonCard: React.FC<{ lesson: Lesson }> = ({ lesson }) => {
     return (
         <Card className="group overflow-hidden border border-slate-200/80 hover:border-slate-300 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 bg-white rounded-2xl">
             <CardContent className="p-6">
-                 Status Bar */}
                 <div className="flex justify-between items-center mb-5">
                     <Badge
                         className={cn(
@@ -91,7 +89,6 @@ export const LessonCard: React.FC<{ lesson: Lesson }> = ({ lesson }) => {
                     </div>
                 </div>
 
-                 Main Info */}
                 <div className="space-y-4">
                     <h4 className="font-extrabold text-slate-800 text-lg leading-tight group-hover:text-black transition-colors">
                         {lesson.name}
@@ -105,13 +102,12 @@ export const LessonCard: React.FC<{ lesson: Lesson }> = ({ lesson }) => {
                             <span className="text-[10px] text-slate-400 uppercase font-bold tracking-tight">
                                 Talaba
                             </span>
-                            <span className="text-sm font-semibold text-slate-700 truncate max-w-[150px]">
+                            <span className="text-sm font-semibold text-slate-700 truncate max-w-37.5">
                                 {studentName}
                             </span>
                         </div>
                     </div>
 
-                     Time Slot Display */}
                     <div className="grid grid-cols-2 gap-2 py-1">
                         <div className="flex items-center gap-2.5 px-3 py-2 bg-slate-50/80 rounded-xl border border-slate-100">
                             <Calendar className="w-4 h-4 text-slate-400" />
@@ -135,7 +131,6 @@ export const LessonCard: React.FC<{ lesson: Lesson }> = ({ lesson }) => {
                     </div>
                 </div>
 
-                 Action Button */}
                 <div className="mt-6">
                     {lesson.googleMeetUrl ? (
                         <Button

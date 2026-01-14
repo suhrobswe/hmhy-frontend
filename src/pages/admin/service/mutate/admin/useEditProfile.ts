@@ -1,5 +1,5 @@
 import { request } from "@/config/request";
-import type { ChangePassword, EditProfile } from "@/types/admin-type";
+import type { ChangePassword, EditProfile } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
 export const useEditProfile = (p0: { username: string; phone: string; }) => {

@@ -19,7 +19,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEditTeacher } from "../../service/mutate/teacher/useEditTeacher";
-import { TEACHER_SPECIFICATIONS } from "@/types/admin-type";
+import { TEACHER_SPECIFICATIONS } from "@/types";
 
 interface TeacherEditModalProps {
     teacher: any;

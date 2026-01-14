@@ -22,7 +22,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { TEACHER_SPECIFICATIONS } from "@/types/admin-type";
+import { TEACHER_SPECIFICATIONS } from "@/types";
 
 interface ProfileDetailsProps {
     isEditing: boolean;

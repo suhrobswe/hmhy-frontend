@@ -8,7 +8,7 @@ import {
     MoreHorizontal,
     Video,
 } from "lucide-react";
-import { LessonStatus, type Lesson } from "@/types/admin-type";
+import { LessonStatus, type Lesson } from "@/types";
 import { useTeacher } from "../../service/query/teacher/useTeacher";
 import { useTeacherLessons } from "../../service/query/teacher/useTeacherLesson";
 

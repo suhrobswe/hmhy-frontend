@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Loader2 } from "lucide-react";
-import type { Props } from "@/types/admin-type";
 
 export const TeacherHardDeleteModal = ({
     teacher,
@@ -14,7 +13,7 @@ export const TeacherHardDeleteModal = ({
     onOpenChange,
     onConfirm,
     isPending,
-}: Props) => {
+}: any) => {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-120 p-0 overflow-hidden border-none rounded-3xl">

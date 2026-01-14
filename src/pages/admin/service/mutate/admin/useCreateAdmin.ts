@@ -1,5 +1,5 @@
 import { request } from "@/config/request";
-import type { CreateAdmin } from "@/types/admin-type";
+import type { CreateAdmin } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
 export const useCreateAdmin = () => {

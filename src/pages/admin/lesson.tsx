@@ -1,5 +1,5 @@
 import { TeacherCardForLesson } from "./components/teacher/teacherCardForLesson";
-import type { Teacher } from "@/types/admin-type";
+import type { Teacher } from "@/types";
 import {
     Pagination,
     PaginationContent,

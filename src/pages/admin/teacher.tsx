@@ -23,7 +23,7 @@ import {
     type SortOrder,
     type Teacher,
     type TeacherSortField,
-} from "@/types/admin-type";
+} from "@/types";
 import { toast } from "sonner";
 import {
     Select,

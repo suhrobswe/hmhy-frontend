@@ -1,5 +1,5 @@
 import { request } from "@/config/request";
-import type { ITeacherStats } from "@/types/admin-type";
+import type { ITeacherStats } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
 export const useTeacherStats = () => {
