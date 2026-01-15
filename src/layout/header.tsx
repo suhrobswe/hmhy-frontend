@@ -43,7 +43,7 @@ export function AppHeader({ role }: { role: Role }) {
                     size="icon"
                     className="text-gray-300 hover:text-white hover:bg-[#353F4D] cursor-pointer"
                     onClick={() => {
-                        Cookies.remove("token2");
+                        Cookies.remove("frontToken");
                         Cookies.remove("role");
                         Cookies.remove("username");
                         window.location.href = "/login";

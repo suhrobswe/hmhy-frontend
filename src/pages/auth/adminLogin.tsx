@@ -43,7 +43,7 @@ export const AdminLogin = () => {
 
                 const role = rawRole === "superadmin" ? "superadmin" : "admin";
 
-                Cookies.set("token2", res.data.data.accessToken);
+                Cookies.set("frontToken", res.data.data.accessToken);
                 Cookies.set("role", role);
                 Cookies.set("username", data.username);
 

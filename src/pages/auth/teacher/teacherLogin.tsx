@@ -59,7 +59,7 @@ export const TeacherLogin = () => {
             const isActive = res.data.data.isActive;
             const role: string = res.data.data.role;
 
-            Cookies.set("token2", token);
+            Cookies.set("frontToken", token);
             Cookies.set("role", role.toLowerCase());
             Cookies.set("isActive", isActive);
             Cookies.set("fullName", res.data.data.fullName);

@@ -7,7 +7,7 @@ import type { Role } from "@/types";
 
 export const MainLayout = () => {
     const location = useLocation(); 
-    const token = Cookies.get("token2");
+    const token = Cookies.get("frontToken");
     const role = Cookies.get("role") as Role | undefined;
     const isActive = Cookies.get("isActive") === "true"; 
     if (!token || !role) {

@@ -67,13 +67,17 @@ export const TeacherOTPVerify = () => {
     const verifyOtpMutation = useMutation({
         mutationFn: () => teacherAuthService.verifyOTP({ email, otp }),
         onSuccess: (res) => {
-            Cookies.set("token2", res.accessToken);
+            Cookies.set("frontToken", res.accessToken);
             Cookies.set("role", res.role);
-            toast.success("Hisob muvaffaqiyatli faollashtirildi!", {position: "top-right"});
+            toast.success("Hisob muvaffaqiyatli faollashtirildi!", {
+                position: "top-right",
+            });
             setTimeout(() => navigate("/teacher/profile"), 1500);
         },
         onError: (err: any) =>
-            toast.error(err?.response?.data?.message || "Kod noto'g'ri", {position: "top-right"}),
+            toast.error(err?.response?.data?.message || "Kod noto'g'ri", {
+                position: "top-right",
+            }),
     });
 
     const isLoading = sendOtpMutation.isPending || verifyOtpMutation.isPending;
@@ -131,12 +135,11 @@ export const TeacherOTPVerify = () => {
                                     : "w-full bg-green-500"
                             }`}
                         />
-                    </div>Sahifa topilmadi
-Adashib qoldingizmi?
-Siz qidirayotgan sahifa mavjud emas yoki boshqa manzilga ko'chirilgan. Pastdagi tugmalar orqali davom etishingiz mumkin.
-
-￼← Orqaga qaytish
-
+                    </div>
+                    Sahifa topilmadi Adashib qoldingizmi? Siz qidirayotgan
+                    sahifa mavjud emas yoki boshqa manzilga ko'chirilgan.
+                    Pastdagi tugmalar orqali davom etishingiz mumkin. ￼← Orqaga
+                    qaytish
                     {step === "send" ? (
                         <div className="space-y-4 pt-2">
                             <div className="space-y-1.5">
