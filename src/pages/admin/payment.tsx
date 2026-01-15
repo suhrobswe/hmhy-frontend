@@ -122,7 +122,7 @@ export const PaymentPage = () => {
 
     const stats = data.data;
 
-    const filteredTransactions = stats.transactions.filter((t) => {
+    const filteredTransactions = stats.transactions.filter((t: any) => {
         const matchesSearch =
             searchQuery === "" ||
             t.student?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -382,54 +382,58 @@ export const PaymentPage = () => {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {filteredTransactions.map((transaction) => (
-                                        <TableRow
-                                            key={transaction.id}
-                                            className="hover:bg-gray-50 transition-colors"
-                                        >
-                                            <TableCell className="font-medium text-gray-900">
-                                                {new Date(
-                                                    transaction.date
-                                                ).toLocaleDateString("uz-UZ")}
-                                            </TableCell>
-                                            <TableCell className="text-gray-700">
-                                                {transaction.student?.name ||
-                                                    "N/A"}
-                                            </TableCell>
-                                            <TableCell className="text-gray-700">
-                                                {transaction.teacher?.name ||
-                                                    "N/A"}
-                                            </TableCell>
-                                            <TableCell className="text-right font-semibold text-gray-900">
-                                                {Number(
-                                                    transaction.amount
-                                                ).toLocaleString()}{" "}
-                                                so'm
-                                            </TableCell>
-                                            <TableCell>
-                                                {getStatusBadge(
-                                                    transaction.status
-                                                )}
-                                            </TableCell>
-                                            <TableCell>
-                                                <Badge
-                                                    variant="outline"
-                                                    className="border-gray-300"
-                                                >
-                                                    {transaction.provider}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    className="hover:bg-gray-100"
-                                                >
-                                                    View
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                    {filteredTransactions.map(
+                                        (transaction: any) => (
+                                            <TableRow
+                                                key={transaction.id}
+                                                className="hover:bg-gray-50 transition-colors"
+                                            >
+                                                <TableCell className="font-medium text-gray-900">
+                                                    {new Date(
+                                                        transaction.date
+                                                    ).toLocaleDateString(
+                                                        "uz-UZ"
+                                                    )}
+                                                </TableCell>
+                                                <TableCell className="text-gray-700">
+                                                    {transaction.student
+                                                        ?.name || "N/A"}
+                                                </TableCell>
+                                                <TableCell className="text-gray-700">
+                                                    {transaction.teacher
+                                                        ?.name || "N/A"}
+                                                </TableCell>
+                                                <TableCell className="text-right font-semibold text-gray-900">
+                                                    {Number(
+                                                        transaction.amount
+                                                    ).toLocaleString()}{" "}
+                                                    so'm
+                                                </TableCell>
+                                                <TableCell>
+                                                    {getStatusBadge(
+                                                        transaction.status
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge
+                                                        variant="outline"
+                                                        className="border-gray-300"
+                                                    >
+                                                        {transaction.provider}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell className="text-right">
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        className="hover:bg-gray-100"
+                                                    >
+                                                        View
+                                                    </Button>
+                                                </TableCell>
+                                            </TableRow>
+                                        )
+                                    )}
                                 </TableBody>
                             </Table>
                         </div>

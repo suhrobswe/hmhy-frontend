@@ -5,7 +5,7 @@ export const useUpdateStudent = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ id, ...data }: { id: string; data: object }) =>
+        mutationFn: ({ id, ...data }: any) =>
             request.patch(`/student/${id}`, data).then((res) => res.data),
         onSuccess: () => {
             queryClient.invalidateQueries({

@@ -44,7 +44,10 @@ export function StudentEditModal({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         updateStudent.mutate(
-            { id: studentId, ...formData },
+            {
+                id: studentId, ...formData,
+                data: undefined
+            },
             {
                 onSuccess: () => {
                     queryClient.invalidateQueries({
