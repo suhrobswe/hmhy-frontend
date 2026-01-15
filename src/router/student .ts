@@ -1,1 +1,6 @@
-export default [{}];
+
+export const studentRoute = [
+    {
+       
+    },
+];

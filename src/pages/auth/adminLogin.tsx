@@ -51,7 +51,7 @@ export const AdminLogin = () => {
                     position: "top-right",
                 });
 
-                navigate(`/admin/lessons`, { replace: true });
+                navigate(`/admin/dashboard`, { replace: true });
             },
             onError: () => {
                 toast.error("Login failed. Please check your credentials.", {
