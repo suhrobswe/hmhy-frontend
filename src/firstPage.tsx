@@ -9,7 +9,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
-export const HomePage = () => {
+export const FirstPage = () => {
     const navigate = useNavigate();
 
     const roles = [
@@ -18,7 +18,7 @@ export const HomePage = () => {
             description: "Learn, take exams and track your progress",
             icon: <GraduationCap className="w-10 h-10 text-blue-600" />,
             path: "/",
-            buttonText: "Student Login",
+            buttonText: "Student Panel",
             color: "hover:border-blue-500",
         },
         {

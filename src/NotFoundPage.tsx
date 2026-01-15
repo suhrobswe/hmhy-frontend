@@ -17,11 +17,11 @@ const NotFound = () => {
 
                 <div className="mt-8">
                     <h2 className="text-3xl font-semibold text-gray-900 mb-4">
-                        Adashib qoldingizmi?
+                        Mavjud bo'lmagan sahifaga kirib qoldingiz!
                     </h2>
                     <p className="text-gray-600 mb-10 leading-relaxed">
                         Siz qidirayotgan sahifa mavjud emas yoki boshqa manzilga
-                        ko'chirilgan. Pastdagi tugmalar orqali davom etishingiz
+                        ko'chirilgan. Pastdagi tugma orqali davom etishingiz
                         mumkin.
                     </p>
 
