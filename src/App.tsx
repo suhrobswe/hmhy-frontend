@@ -17,19 +17,22 @@ function App() {
     const { mutate: telegramLogin } = useAuth();
 
     useEffect(() => {
-        const token = getAccessToken();
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
 
-        if (!token && window.Telegram?.WebApp?.initData) {
-            telegramLogin(window.Telegram.WebApp.initData);
+        const token = getAccessToken();
+        if (!token && tg?.initData) {
+            telegramLogin(tg.initData);
         }
     }, []);
-
     return (
         <Routes>
-            <Route path="/login" element={<FirstPage />} />
+            <Route path="/" element={<FirstPage />} />
 
-            {/* Telegram student entry */}
-            <Route path="/" element={<StudentLogin />} />
+            <Route path="/student" element={<StudentLogin />} />
 
             <Route path="/login/admin" element={<AdminLogin />} />
             <Route path="/login/teacher" element={<TeacherLogin />} />

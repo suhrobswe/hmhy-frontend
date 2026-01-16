@@ -17,7 +17,7 @@ export const FirstPage = () => {
             title: "Student",
             description: "Learn, take exams and track your progress",
             icon: <GraduationCap className="w-10 h-10 text-blue-600" />,
-            path: "/",
+            path: "/student",
             buttonText: "Student Panel",
             color: "hover:border-blue-500",
         },

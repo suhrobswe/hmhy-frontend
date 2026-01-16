@@ -46,7 +46,7 @@ export function AppHeader({ role }: { role: Role }) {
                         Cookies.remove("frontToken");
                         Cookies.remove("role");
                         Cookies.remove("username");
-                        window.location.href = "/login";
+                        window.location.href = "/";
                     }}
                 >
                     <LogOut className="h-5 w-5" />

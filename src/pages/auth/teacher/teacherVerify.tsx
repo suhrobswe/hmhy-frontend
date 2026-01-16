@@ -56,13 +56,22 @@ export const TeacherOTPVerify = () => {
         mutationFn: () =>
             teacherAuthService.sendOTP({ email, phoneNumber, password }),
         onSuccess: (res) => {
-            toast.success(`Tasdiqlash kodi yuborildi!
-                Test uchun otp: ${res.data.otp}`);
+            const receivedOtp = res?.data?.otp || res?.otp;
+
+            toast.success(
+                `Tasdiqlash kodi yuborildi! Test uchun otp: ${receivedOtp}`,
+                {
+                    duration: 5000,
+                }
+            );
+
             setStep("verify");
             setTimer(119);
         },
-        onError: (err: any) =>
-            toast.error(err?.response?.data?.message || "Xatolik yuz berdi"),
+        onError: (err: any) => {
+            console.error("OTP Error:", err);
+            toast.error(err?.response?.data?.message || "Xatolik yuz berdi");
+        },
     });
 
     const verifyOtpMutation = useMutation({
@@ -219,13 +228,63 @@ export const TeacherOTPVerify = () => {
                                 {[...Array(6)].map((_, i) => (
                                     <Input
                                         key={i}
+                                        id={`otp-input-${i}`}
                                         maxLength={1}
                                         className="h-14 w-full text-center text-xl font-bold border-2 focus:border-green-500"
                                         value={otp[i] || ""}
                                         onChange={(e) => {
-                                            const val = e.target.value;
-                                            if (val.length <= 1)
-                                                setOtp((prev) => prev + val);
+                                            const val = e.target.value.replace(
+                                                /[^0-9]/g,
+                                                ""
+                                            );
+                                            if (!val) return;
+
+                                            const otpArray = otp.split("");
+                                            otpArray[i] = val.charAt(
+                                                val.length - 1
+                                            );
+                                            const newOtp = otpArray.join("");
+                                            setOtp(newOtp);
+
+                                            if (i < 5 && val) {
+                                                const nextInput =
+                                                    document.getElementById(
+                                                        `otp-input-${i + 1}`
+                                                    );
+                                                nextInput?.focus();
+                                            }
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Backspace") {
+                                                if (!otp[i] && i > 0) {
+                                                    const prevInput =
+                                                        document.getElementById(
+                                                            `otp-input-${i - 1}`
+                                                        );
+                                                    prevInput?.focus();
+                                                }
+                                                const otpArray = otp.split("");
+                                                otpArray[i] = "";
+                                                setOtp(otpArray.join(""));
+                                            }
+                                        }}
+                                        onPaste={(e) => {
+                                            const data = e.clipboardData
+                                                .getData("text")
+                                                .slice(0, 6)
+                                                .replace(/[^0-9]/g, "");
+                                            if (data) {
+                                                setOtp(data);
+                                                const lastIdx = Math.min(
+                                                    data.length,
+                                                    5
+                                                );
+                                                document
+                                                    .getElementById(
+                                                        `otp-input-${lastIdx}`
+                                                    )
+                                                    ?.focus();
+                                            }
                                         }}
                                     />
                                 ))}
