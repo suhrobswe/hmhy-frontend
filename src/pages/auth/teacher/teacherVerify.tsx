@@ -55,8 +55,9 @@ export const TeacherOTPVerify = () => {
     const sendOtpMutation = useMutation({
         mutationFn: () =>
             teacherAuthService.sendOTP({ email, phoneNumber, password }),
-        onSuccess: () => {
-            toast.success("Tasdiqlash kodi yuborildi!");
+        onSuccess: (res) => {
+            toast.success(`Tasdiqlash kodi yuborildi!
+                Test uchun otp: ${res.data.otp}`);
             setStep("verify");
             setTimer(119);
         },
