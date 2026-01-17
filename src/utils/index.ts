@@ -5,5 +5,5 @@ export const getAccessToken = () => {
 };
 
 export const setAccessToken = (token: string) => {
-    Cookies.set("frontToken", token);
+    Cookies.set("frontToken", token, { expires: 7 });
 };

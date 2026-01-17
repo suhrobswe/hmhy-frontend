@@ -261,4 +261,4 @@ export interface AdminLoginInput {
     password: string;
 }
 
-export type Role = "admin" | "teacher" | "superadmin";
+export type Role = "admin" | "teacher" | "superadmin" | "student";

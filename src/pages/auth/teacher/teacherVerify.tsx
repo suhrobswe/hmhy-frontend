@@ -61,8 +61,9 @@ export const TeacherOTPVerify = () => {
             toast.success(
                 `Tasdiqlash kodi yuborildi! Test uchun otp: ${receivedOtp}`,
                 {
-                    duration: 5000,
-                }
+                    duration: 10000,
+                    position: "top-right",
+                },
             );
 
             setStep("verify");
@@ -79,9 +80,12 @@ export const TeacherOTPVerify = () => {
         onSuccess: (res) => {
             Cookies.set("frontToken", res.accessToken);
             Cookies.set("role", res.role);
-            toast.success("Hisob muvaffaqiyatli faollashtirildi!", {
-                position: "top-right",
-            });
+            toast.success(
+                "Hisob muvaffaqiyatli faollashtirildi! Admin sizni tasdiqlashini kuting.",
+                {
+                    position: "top-right",
+                },
+            );
             setTimeout(() => navigate("/teacher/profile"), 1500);
         },
         onError: (err: any) =>
@@ -146,10 +150,6 @@ export const TeacherOTPVerify = () => {
                             }`}
                         />
                     </div>
-                    Sahifa topilmadi Adashib qoldingizmi? Siz qidirayotgan
-                    sahifa mavjud emas yoki boshqa manzilga ko'chirilgan.
-                    Pastdagi tugmalar orqali davom etishingiz mumkin. ￼← Orqaga
-                    qaytish
                     {step === "send" ? (
                         <div className="space-y-4 pt-2">
                             <div className="space-y-1.5">
@@ -235,13 +235,13 @@ export const TeacherOTPVerify = () => {
                                         onChange={(e) => {
                                             const val = e.target.value.replace(
                                                 /[^0-9]/g,
-                                                ""
+                                                "",
                                             );
                                             if (!val) return;
 
                                             const otpArray = otp.split("");
                                             otpArray[i] = val.charAt(
-                                                val.length - 1
+                                                val.length - 1,
                                             );
                                             const newOtp = otpArray.join("");
                                             setOtp(newOtp);
@@ -249,7 +249,7 @@ export const TeacherOTPVerify = () => {
                                             if (i < 5 && val) {
                                                 const nextInput =
                                                     document.getElementById(
-                                                        `otp-input-${i + 1}`
+                                                        `otp-input-${i + 1}`,
                                                     );
                                                 nextInput?.focus();
                                             }
@@ -259,7 +259,7 @@ export const TeacherOTPVerify = () => {
                                                 if (!otp[i] && i > 0) {
                                                     const prevInput =
                                                         document.getElementById(
-                                                            `otp-input-${i - 1}`
+                                                            `otp-input-${i - 1}`,
                                                         );
                                                     prevInput?.focus();
                                                 }
@@ -277,11 +277,11 @@ export const TeacherOTPVerify = () => {
                                                 setOtp(data);
                                                 const lastIdx = Math.min(
                                                     data.length,
-                                                    5
+                                                    5,
                                                 );
                                                 document
                                                     .getElementById(
-                                                        `otp-input-${lastIdx}`
+                                                        `otp-input-${lastIdx}`,
                                                     )
                                                     ?.focus();
                                             }

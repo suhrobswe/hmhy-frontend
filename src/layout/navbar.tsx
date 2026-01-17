@@ -22,7 +22,7 @@ export function AppSidebar({ role }: { role: Role }) {
         menuLinks = menuLinks.filter(
             (item) =>
                 item.url.includes("profile") ||
-                item.title.toLowerCase().includes("profile")
+                item.title.toLowerCase().includes("profile"),
         );
     }
 

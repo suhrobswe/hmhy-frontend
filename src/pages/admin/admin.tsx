@@ -121,8 +121,8 @@ export const AdminPage = () => {
         createAdmin(createFormData, {
             onSuccess: () => {
                 toast.success("Admin muvaffaqiyatli yaratildi!");
-                queryClient.invalidateQueries({ queryKey: ["adminList"] });
                 setOpenCreate(false);
+                queryClient.invalidateQueries({ queryKey: ["adminList"] });
                 setCreateFormData({
                     username: "",
                     phoneNumber: "",

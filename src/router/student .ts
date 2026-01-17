@@ -5,19 +5,19 @@ import { TeacherPage } from "@/pages/student/teachers";
 
 export const studentRoute = [
     {
-        path: "/teachers",
+        path: "/student/teachers",
         page: TeacherPage,
     },
     {
-        path: "/profile",
+        path: "/student/profile",
         page: ProfilePage,
     },
     {
-        path: "/history",
+        path: "/student/history",
         page: HistoryPage,
     },
     {
-        path: "/scheldue",
+        path: "/student/scheldue",
         page: SchelduePage,
     },
 ];

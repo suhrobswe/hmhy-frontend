@@ -7,9 +7,16 @@ import {
     CalendarDays,
     HomeIcon,
     Shield,
+    type LucideIcon,
 } from "lucide-react";
 
-export const links = {
+interface NavLink {
+    title: string;
+    url: string;
+    icon: LucideIcon;
+}
+
+export const links: Record<string, NavLink[]> = {
     superadmin: [
         { title: "Dashboard", url: "/admin/dashboard", icon: HomeIcon },
         { title: "Admins", url: "/admin/admins", icon: Shield },
@@ -34,5 +41,12 @@ export const links = {
         { title: "Schedule", url: "/teacher/schedule", icon: CalendarDays },
         { title: "Payments", url: "/teacher/payments", icon: Wallet },
         { title: "Profile", url: "/teacher/profile", icon: User },
+    ],
+
+    student: [
+        { title: "Ustozlar", url: "/student/teachers", icon: Users },
+        { title: "Jadval", url: "/student/scheldue", icon: CalendarDays },
+        { title: "Tarix", url: "/student/history", icon: BookOpen },
+        { title: "Profil", url: "/student/profile", icon: User },
     ],
 };
